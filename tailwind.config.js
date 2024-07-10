@@ -16,6 +16,14 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
+        colors:{
+            "c-black":"#3d3d3d",
+            "c-grey":"#4b4b4b",
+            "c-yellow":"#f1c40f",
+            "c-white":"#FFFFFF",
+            "c-pr":"#3498db",
+            "c-bh":"#2980b9"
+        }
     },
 
     plugins: [forms],
