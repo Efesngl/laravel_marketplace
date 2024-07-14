@@ -10,9 +10,10 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faBars, faCirclePlus, faHouse, faMagnifyingGlass, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
-library.add(faBars,faMagnifyingGlass,faHouse,faCirclePlus,faUser,faXmark)
-import MainLayout from "./Layouts/MainLayout.vue"
+import { faArrowLeft, faBars, faCirclePlus, faHouse, faList, faMagnifyingGlass, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+library.add(faBars,faMagnifyingGlass,faHouse,faCirclePlus,faUser,faXmark,faList,faArrowLeft)
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
@@ -23,6 +24,7 @@ createInertiaApp({
             .component("fa-icon",FontAwesomeIcon)
             .use(plugin)
             .use(ZiggyVue)
+            .use(VueSweetalert2)
             .mount(el);
     },
     progress: {
