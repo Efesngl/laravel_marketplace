@@ -1,6 +1,7 @@
 <template>
-    <MainLayout>
-        <div id="tabs" class="flex flex-row overflow-x-scroll w-dvw">
+    <AccountLayout title="Account Details" :backUrl="route('account')">
+        <div class="h-content-bboff ">
+            <div id="tabs" class="flex flex-row overflow-x-scroll w-screen">
             <button
                 @click="
                     () => {
@@ -14,7 +15,6 @@
                 {{ t.title }}
             </button>
         </div>
-        <Link :href="route('account')" class="text-blue-500 ms-1"><fa-icon icon="fa-solid fa-arrow-left"></fa-icon>Geri dön</Link>
         <div class="pt-3" v-if="selectedTab == 0">
             <h2 class="text-center text-3xl">Profile Information</h2>
             <form @submit.prevent="updateProfile">
@@ -25,11 +25,11 @@
                     </div>
                     <div class="flex flex-col">
                         <label for="birth-date">Birth date</label>
-                        <input type="date" name="birth-date" id="birth-date" v-model="account.birthDate" :max="maxDate()" />
+                        <input type="date" name="birth-date" class="w-full" id="birth-date" v-model="account.birthDate" :max="maxDate()" />
                     </div>
                     <div class="flex flex-col">
                         <h4 for="birth-date">Cinsiyet</h4>
-                        <div class="flex flex-row gap-1">
+                        <div class="flex flex-row items-center justify-start gap-1">
                             <input type="radio" name="gender" :value="0" id="gender_male" v-model="account.gender" />
                             <label for="gender_male">Male</label>
                             <input type="radio" name="gender" :value="1" id="gender_female" v-model="account.gender" />
@@ -73,7 +73,7 @@
             </form>
         </div>
         <div class="pt-3" v-if="selectedTab == 3">
-            <h2 class="text-center text-3xl">Şifre değişikliği</h2>
+            <h2 class="text-center text-3xl">Change password</h2>
             <form @submit.prevent="updatePassword">
                 <div class="flex flex-col gap-4 p-2" id="account-detail-password">
                     <div class="flex flex-col">
@@ -92,15 +92,16 @@
                 </div>
             </form>
         </div>
-    </MainLayout>
+        </div>
+    </AccountLayout>
 </template>
 
 <script>
-import MainLayout from "@/Layouts/MainLayout.vue";
+import AccountLayout from "@/Layouts/AccountLayout.vue";
 import { Link, useForm } from "@inertiajs/vue3";
 export default {
     components: {
-        MainLayout,
+        AccountLayout,
         Link,
     },
     methods: {

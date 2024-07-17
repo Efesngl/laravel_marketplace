@@ -23,6 +23,8 @@
         "@fortawesome/free-regular-svg-icons": "^6.5.2",
         "@fortawesome/free-solid-svg-icons": "^6.5.2",
         "@fortawesome/vue-fontawesome": "^3.0.8",
+        "@headlessui/vue": "^1.7.22",
+        "flowbite": "^2.4.1",
         "sweetalert2": "^11.12.2",
         "vue-sweetalert2": "^5.0.11"
     }

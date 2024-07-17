@@ -3,11 +3,13 @@ import forms from '@tailwindcss/forms';
 const colors = require('tailwindcss/colors')
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode:"class",
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
+        "./node_modules/flowbite/**/*.js"
     ],
 
     theme: {
@@ -15,6 +17,10 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            height:{
+                content:'calc(100svh - 7.5rem)',
+                'content-bboff':'calc(100svh - 56px)',
+            }
         },
         colors:{
             "c-black":"#3d3d3d",
@@ -32,5 +38,5 @@ export default {
         }
     },
 
-    plugins: [forms],
+    plugins: [forms,require('flowbite/plugin')],
 };
