@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->unsignedTinyInteger("gender")->nullable()->default(0);
-            $table->date("birth_date")->nullable();
+        Schema::create('deal_images', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            
+            $table->unsignedBigInteger("deal_id");
+            $table->string("image");
         });
     }
 
@@ -23,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('deal_images');
     }
 };

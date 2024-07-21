@@ -12,7 +12,5 @@ services:
     image: phpmyadmin:latest
     environment:
     - MYSQL_ROOT_PASSWORD=123
-    - PMA_HOST=db
-    - PMA_ARBITRARY=1
     ports:
       - 8080:80

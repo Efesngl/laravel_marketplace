@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->unsignedTinyInteger("gender")->nullable()->default(0);
-            $table->date("birth_date")->nullable();
+        Schema::create('specifications', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string("specification");
         });
     }
 
@@ -23,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('specifications');
     }
 };

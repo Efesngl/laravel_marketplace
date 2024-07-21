@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Deal;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -10,9 +13,22 @@ class DealController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $cat_id = $request->input("cat");
+        $category = "All";
+        $deals = Deal::all();
+        if ($cat_id != 0) {
+            $category = Category::findOrFail($cat_id);
+            $deals = Deal::where("category_id", $category->id)->get();
+            if ($category->can_have_children == 1) {
+                $deals = Deal::whereRelation("category.parent", "parent_id", "=", $cat_id)->orWhereRelation("category", "parent_id", "=", $cat_id)->get();
+            }
+        }
+        return Inertia::render("Deal/Index", [
+            "category" => $category,
+            "deals" => $deals
+        ]);
     }
 
     /**
@@ -37,7 +53,14 @@ class DealController extends Controller
     public function show(string $id)
     {
         //
-        return Inertia::render("Deal/DealDetail");
+        $deal = Deal::with([
+            "user:id,name,email,phone_number",
+            "specifications.specification:id,specification",
+            "specifications.value:id,value"
+        ])->findOrFail($id);
+        return Inertia::render("Deal/DealDetail", [
+            "deal" => $deal
+        ]);
     }
 
     /**

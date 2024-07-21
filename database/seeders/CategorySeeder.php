@@ -15,10 +15,9 @@ class CategorySeeder extends Seeder
     {
         //
         $categories = [
-            ["category"=>"Bilgisayar"],
+            ["category"=>"Computer"],
             ["category"=>"Mobile Phone"],
-            ["category"=>"Game Consoles"],
-            ["category"=>"Tablets"],
+            ["category"=>"Game Console"],
         ];
         Category::insert($categories);
     }

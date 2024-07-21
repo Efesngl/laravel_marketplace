@@ -8,12 +8,15 @@ use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CategoryResource extends Resource
@@ -28,7 +31,14 @@ class CategoryResource extends Resource
             ->schema([
                 //
                 TextInput::make('category'),
-                Select::make("parent_id")->options(Category::all()->pluck("category","id")),
+                Select::make("parent_id")
+                    ->relationship(
+                        name: "parent",
+                        titleAttribute: "category",
+                        modifyQueryUsing: fn(Builder $query) => $query->where("can_have_children", 1),
+                    )
+                    ->getOptionLabelFromRecordUsing(fn(Model $category) => is_null($category->parent) ? "{$category->category}" : "{$category->parent->category}-{$category->category}"),
+                Toggle::make("can_have_children")
             ]);
     }
 
@@ -38,7 +48,8 @@ class CategoryResource extends Resource
             ->columns([
                 //
                 TextColumn::make("category"),
-                TextColumn::make("parent_id"),
+                TextColumn::make("parent.category")->sortable(),
+                ToggleColumn::make("can_have_children")->sortable(),
             ])
             ->filters([
                 //

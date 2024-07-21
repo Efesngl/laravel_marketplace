@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('deals', function (Blueprint $table) {
             //
-            $table->unsignedTinyInteger("gender")->nullable()->default(0);
-            $table->date("birth_date")->nullable();
+            $table->unsignedBigInteger("category_id");
         });
     }
 
@@ -23,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('deals', function (Blueprint $table) {
             //
         });
     }

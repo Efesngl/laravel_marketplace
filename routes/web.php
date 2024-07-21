@@ -4,15 +4,16 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrowseController;
 use App\Http\Controllers\DealController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get("/", function () {
-    return inertia("Home");
-})->name("home");
+Route::controller(HomeController::class)->group(function () {
+    Route::get("/","index")->name("home");
+});
 Route::resource("/deal", DealController::class);
 Route::controller(AuthController::class)->group(function () {
     Route::get("/login", "login_view")->name("login");

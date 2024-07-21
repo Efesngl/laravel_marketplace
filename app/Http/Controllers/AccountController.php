@@ -46,7 +46,7 @@ class AccountController extends Controller
     public function updatePhone(Request $request)
     {
         $pn = $request->validate([
-            "phoneNumber" => ["required","size:10", Rule::unique("users")->ignore($request->user()->id)],
+            "phoneNumber" => ["required","size:10", Rule::unique("users","phone_number")->ignore($request->user()->id)],
         ]);
         $user = User::find($request->user()->id);
         if ($user->phone_number != $pn["phoneNumber"]) {

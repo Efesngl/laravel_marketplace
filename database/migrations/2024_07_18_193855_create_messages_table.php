@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->unsignedTinyInteger("gender")->nullable()->default(0);
-            $table->date("birth_date")->nullable();
+        Schema::create('messages', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+
+            $table->unsignedBigInteger("from");
+            $table->unsignedBigInteger("to");
+            $table->string("message",500);
+            $table->boolean("is_seen")->default(false);
         });
     }
 
@@ -23,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('messages');
     }
 };
