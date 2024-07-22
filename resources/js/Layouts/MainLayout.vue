@@ -1,10 +1,11 @@
 <template>
     <div class="container">
-        <nav id="navbar" class="fixed top-0 left-0 w-full bg-c-white text-c-black h-14 px-3 py-2">
+        <nav id="navbar" class="fixed top-0 left-0 w-full bg-c-white text-c-black h-14 px-3 py-2 z-50">
             <div class="flex flex-row justify-between items-center">
                 <div id="logo">
                     <h1 class="text-3xl">Logo</h1>
                 </div>
+                <span class="h-full text-c-black" @click="changeColorScheme"><fa-icon icon="fa-solid fa-bell" size="xl"></fa-icon></span>
                 <span class="h-full text-c-black"><fa-icon icon="fa-solid fa-bell" size="xl"></fa-icon></span>
             </div>
         </nav>
@@ -30,6 +31,16 @@ export default {
     methods: {
         toggleSearch(status) {
             this.isSearhBarShowing = status;
+        },
+        changeColorScheme() {
+            let scheme = document.querySelector("html");
+            if (scheme.classList.contains("light")) {
+                scheme.classList.remove("light");
+                scheme.classList.add("dark");
+            } else {
+                scheme.classList.remove("dark");
+                scheme.classList.add("light");
+            }
         },
     },
 };

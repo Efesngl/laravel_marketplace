@@ -10,7 +10,7 @@
                 "
                 v-for="t in tabs"
                 class="w-3/12"
-                :class="{ 'text-blue-500': selectedTab == t.id }"
+                :class="{ 'text-yellow-400': selectedTab == t.id }"
             >
                 {{ t.title }}
             </button>
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div class="flex justify-center">
-                        <button class="text-center bg-c-pr text-c-white p-2">Update</button>
+                        <button class="text-center bg-yellow-400 text-c-white p-2">Update</button>
                     </div>
                 </div>
             </form>
@@ -52,7 +52,7 @@
                         <input @keypress="clearErrors(email)" type="text" name="email" id="email" v-model="email.email" />
                     </div>
                     <div class="flex justify-center">
-                        <button class="text-center bg-c-pr text-c-white p-2 disabled:opacity-50" :disabled="email.email == user.email">Update</button>
+                        <button class="text-center bg-yellow-400 text-c-white p-2 disabled:opacity-50" :disabled="email.email == user.email">Update</button>
                     </div>
                 </div>
             </form>
@@ -67,7 +67,7 @@
                         <input type="number" @keypress="checkLenght" name="phoneNumber" id="phoneNumber" v-model="phoneNumber.phoneNumber" />
                     </div>
                     <div class="flex justify-center">
-                        <button class="text-center bg-c-pr text-c-white p-2">Update</button>
+                        <button class="text-center bg-yellow-400 text-c-white p-2">Update</button>
                     </div>
                 </div>
             </form>
@@ -87,7 +87,7 @@
                         <input type="text" name="new-password-confirmation" id="new-password-confirmation" v-model="password.newPassword_confirmation" />
                     </div>
                     <div class="flex justify-center">
-                        <button type="submit" class="text-center bg-c-pr text-c-white p-2">Update</button>
+                        <button type="submit" class="text-center bg-yellow-400 text-c-white p-2">Update</button>
                     </div>
                 </div>
             </form>

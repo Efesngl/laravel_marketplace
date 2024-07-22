@@ -2,53 +2,53 @@
     <MainLayout>
         <div class="min-h-svh h-auto flex flex-col gap-1">
             <h2 class="text-center text-2xl">{{ deal.title }}</h2>
-            <Carousel :Images="images"></Carousel>
+            <div>
+                <Galleria :value="images" :numVisible="3" containerStyle="w-full" :showItemNavigators="true">
+                    <template #item="slotProps">
+                        <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%" />
+                    </template>
+                    <template #thumbnail="slotProps">
+                        <img :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt" />
+                    </template>
+                </Galleria>
+            </div>
+
             <div id="owner-detail" class="flex flex-col border-b">
                 <div id="owner" class="text-center">
                     <a href="/" class="text-blue-500">{{ deal.user.name }}</a>
                 </div>
                 <div id="address" class="text-center">
-                    <a class="text-blue-500">İzmir</a><small>/</small><a class="text-blue-500">Karabağlar</a><small>/</small><a class="text-blue-500">Esenlik Mahallesi</a>
+                    <a class="text-blue-500">{{deal.city.name}}</a><small>/</small><a class="text-blue-500">{{ deal.district.name }}</a><small>/</small><a class="text-blue-500">{{ deal.neighbourhood.name }}</a>
                 </div>
             </div>
             <div>
-                <TabGroup>
-                    <TabList class="flex flex-row justify-center gap-4 border-b-2 border-c-pr">
-                        <Tab v-slot="{ selected }" class="focus-visible:outline-none"
-                            ><button class="p-2 border-b-0 border focus-visible:outline-none" :class="{ 'bg-c-white text-c-black': !selected, 'bg-c-pr text-c-white': selected }">
-                                Deal details
-                            </button></Tab
-                        >
-                        <Tab v-slot="{ selected }" class="focus-visible:outline-none"
-                            ><button class="p-2 border-b-0 border focus-visible:outline-none" :class="{ 'bg-c-white text-c-black': !selected, 'bg-c-pr text-c-white': selected }">
-                                Description
-                            </button></Tab
-                        >
-                        <Tab v-slot="{ selected }" class="focus-visible:outline-none"
-                            ><button class="p-2 border-b-0 border focus-visible:outline-none" :class="{ 'bg-c-white text-c-black': !selected, 'bg-c-pr text-c-white': selected }">
-                                Location
-                            </button></Tab
-                        >
+                <Tabs value="0">
+                    <TabList class="justify-between">
+                        <Tab value="0">Description</Tab>
+                        <Tab value="1">Details</Tab>
+                        <Tab value="2">Location</Tab>
                     </TabList>
                     <TabPanels>
-                        <TabPanel class="mt-2 p-2">
-                            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
-                                    <tbody>
-                                        <tr v-for="spec in deal.specifications" class="flex flex-col bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th>{{ spec.specification.specification }}</th>
-                                            <td>{{ spec.value.value }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <TabPanel value="0">
+                            <p class="m-0">
+                                <span v-html="deal.description"></span>
+                            </p>
                         </TabPanel>
-                        <TabPanel class="mt-2 p-2 h-auto">
-                            <span v-html="deal.description"></span>
+                        <TabPanel value="1">
+                            <p class="m-0">
+                                <DataTable stripedRows :value="deal.specifications">
+                                    <Column field="specification.specification" header="Spec"></Column>
+                                    <Column field="value.value" header=""></Column>
+                                </DataTable>
+                            </p>
                         </TabPanel>
-                        <TabPanel class="mt-2 p-2">Content 3</TabPanel>
+                        <TabPanel value="2">
+                            <p class="m-0">
+                                Location
+                            </p>
+                        </TabPanel>
                     </TabPanels>
-                </TabGroup>
+                </Tabs>
             </div>
         </div>
     </MainLayout>
@@ -56,17 +56,25 @@
 
 <script>
 import MainLayout from "../../Layouts/MainLayout.vue";
-import Carousel from "../../Components/Carousel.vue";
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
+import Galleria from "primevue/galleria";
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
+import TabPanel from 'primevue/tabpanel';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 export default {
     components: {
         MainLayout,
-        Carousel,
-        TabGroup,
+        Galleria,
+        Tabs,
         TabList,
-        TabPanel,
         Tab,
+        TabPanel,
         TabPanels,
+        DataTable,
+        Column
     },
     data() {
         return {

@@ -28,13 +28,13 @@ export default {
             "c-yellow":"#f1c40f",
             "c-white":"#FFFFFF",
             "c-pr":"#00a8ff",
-            "c-bh":"#0097e6",
             blue:colors.blue,
             red:colors.red,
             stone:colors.stone,
             neutral:colors.neutral,
             gray:colors.gray,
-            white:colors.white
+            white:colors.white,
+            yellow:colors.yellow
         }
     },
 

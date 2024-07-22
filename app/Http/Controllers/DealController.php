@@ -54,6 +54,9 @@ class DealController extends Controller
     {
         //
         $deal = Deal::with([
+            "neighbourhood:name,id,district_id",
+            "district:name,id",
+            "city:name,id",
             "user:id,name,email,phone_number",
             "specifications.specification:id,specification",
             "specifications.value:id,value"

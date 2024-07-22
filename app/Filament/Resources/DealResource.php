@@ -5,7 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DealResource\Pages;
 use App\Filament\Resources\DealResource\RelationManagers;
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Deal;
+use App\Models\District;
+use App\Models\Neighbourhood;
 use App\Models\Specification;
 use App\Models\SpecificationValue;
 use App\Models\User;
@@ -57,6 +60,14 @@ class DealResource extends Resource
                     RichEditor::make("description"),
                 ]),
                 Toggle::make("is_active"),
+                Grid::make(3)->schema([
+                    Select::make("city_id")
+                        ->relationship("city", "name")->live(),
+                    Select::make("district_id")
+                        ->relationship("district", "name")->live(),
+                    Select::make("neighbourhood_id")
+                        ->relationship("neighbourhood", "name")
+                ]),
                 Grid::make(1)->schema([
                     Repeater::make("specifications")->relationship()->schema([
                         Select::make("specification_id")
@@ -64,14 +75,15 @@ class DealResource extends Resource
                             ->options(Specification::all()->pluck("specification", "id"))->live(),
                         Select::make("value_id")
                             ->relationship("value", "value_id")
-                            ->options(function(Get $get){
-                                if(is_null($get("specification_id"))){
-                                    return SpecificationValue::all()->pluck("value","id");
+                            ->options(function (Get $get) {
+                                if (is_null($get("specification_id"))) {
+                                    return SpecificationValue::all()->pluck("value", "id");
                                 }
-                                return SpecificationValue::where("specification_id",$get("specification_id"))->get()->pluck("value","id");
+                                return SpecificationValue::where("specification_id", $get("specification_id"))->get()->pluck("value", "id");
                             })
                     ])
-                ])
+                ]),
+
             ]);
     }
 
