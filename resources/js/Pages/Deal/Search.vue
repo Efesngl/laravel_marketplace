@@ -6,16 +6,16 @@
                 <form @submit.prevent="search()" class="flex flex-col">
                     <label for="search">Search</label>
                     <div class="flex flex-row gap-0">
-                        <input type="text" class="basis-3/4" name="search" id="search" v-model="s.search" />
-                        <button type="submit" class="basis-1/4 bg-c-pr text-c-white">Search</button>
+                        <input type="text" class="basis-3/4 text-black" name="search" id="search" v-model="s.search" />
+                        <button type="submit" class="basis-1/4 bg-yellow-400 text-white dark:bg-zinc-800">Search</button>
                     </div>
                 </form>
                 <div>
                     <h3>Recent searchs</h3>
-                    <div class="flex flex-col ">
-                        <div class="flex flex-row justify-start first:border-t items-center border-b" v-for="i in 10">
-                            <a href="" class="basis-11/12 p-2">Search</a>
-                            <button class="basis-1/12 text-red-500" ><fa-icon icon="fa-soild fa-trash"></fa-icon></button>
+                    <div class="flex flex-col">
+                        <div class="flex flex-row justify-start first:border-t items-center border-b" v-for="rs in recentSearches">
+                            <button @click="visitRecentSearch(rs)" class="basis-11/12 p-2 text-start">{{ rs }}</button>
+                            <button class="basis-1/12 text-red-500" @click="removeRs(rs)"><fa-icon icon="fa-soild fa-trash"></fa-icon></button>
                         </div>
                     </div>
                 </div>
@@ -26,21 +26,45 @@
 
 <script>
 import MainLayout from "../../Layouts/MainLayout.vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, Link,router } from "@inertiajs/vue3";
 export default {
     components: {
         MainLayout,
+        Link,
     },
     data() {
         return {
-            s:useForm({
-                search:null
-            })
+            s: useForm({
+                search: null,
+            }),
+            recentSearches: [],
         };
     },
-    methods:{
-        search(){
+    mounted() {
+        if (localStorage.getItem("recentSearches") != null) {
+            this.recentSearches = JSON.parse(localStorage.getItem("recentSearches"));
         }
-    }
+    },
+    methods: {
+        search() {
+            if (!this.recentSearches.includes(this.s.search)) {
+                this.recentSearches.push(this.s.search);
+                localStorage.setItem("recentSearches", JSON.stringify(this.recentSearches));
+            }
+            this.s.get(route("search.result"));
+        },
+        visitRecentSearch(rs) {
+            let index = this.recentSearches.indexOf(rs);
+            this.recentSearches.unshift(this.recentSearches.splice(index, 1)[0]);
+            localStorage.setItem("recentSearches", JSON.stringify(this.recentSearches));
+            router.get(route('search.result'),{search:rs})
+        },
+        removeRs(rs) {
+            this.recentSearches = this.recentSearches.filter((val) => {
+                return val != rs;
+            });
+            localStorage.setItem("recentSearches", JSON.stringify(this.recentSearches));
+        },
+    },
 };
 </script>

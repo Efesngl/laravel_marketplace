@@ -34,7 +34,8 @@ export default {
             neutral:colors.neutral,
             gray:colors.gray,
             white:colors.white,
-            yellow:colors.yellow
+            yellow:colors.yellow,
+            zinc:colors.zinc
         }
     },
 

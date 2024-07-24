@@ -34,6 +34,7 @@ Route::prefix("/account")->middleware("auth")->group(function () {
 });
 Route::controller(SearchController::class)->group(function () {
     Route::get("/search","index")->name("search");
+    Route::get("/result","result")->name("search.result");
 });
 Route::controller(BrowseController::class)->prefix("/categories")->group(function () {
     Route::get("/{cat?}","index")->name("browse.index");

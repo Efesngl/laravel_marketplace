@@ -1,24 +1,33 @@
+<style>
+    .p-card-title{
+        overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    }
+</style>
 <template>
-    <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <Link :href="route('deal.show', { deal: deal.id })">
-            <img class="rounded-t-lg" :src="deal.banner" alt="product image" />
-            <div class="px-5 pb-3">
-                <Link :href="route('deal.show', { deal: deal.id })">
-                    <h5 class="text-lg truncate font-semibold tracking-tight text-gray-900 dark:text-white">{{ deal.title }}</h5>
-                </Link>
-                <div class="flex flex-col items-center justify-between">
-                    <span class="text-base font-bold text-gray-900 dark:text-white">{{ deal.price }} TL</span>
-                </div>
-            </div>
-        </Link>
-    </div>
+    <Link :href="route('deal.show', { deal: deal.id })">
+        <Card style="overflow: hidden;">
+            <template #header>
+                <img :src="deal.banner" alt="" class="w-full" />
+            </template>
+            <template #title>
+                {{ deal.title }}
+            </template>
+            <template #subtitle>
+                <span class="truncate">{{ deal.price }} TL</span>
+            </template>
+        </Card>
+    </Link>
 </template>
 
 <script>
+import Card from "primevue/card";
 import { Link } from "@inertiajs/vue3";
 export default {
     components: {
         Link,
+        Card,
     },
     props: {
         deal: Object,
