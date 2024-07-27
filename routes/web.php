@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrowseController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -15,6 +16,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::get("/","index")->name("home");
 });
 Route::resource("/deal", DealController::class);
+Route::get("/category/{id}/specs",[CategoryController::class,"specs"])->name("category.specs");
+Route::post("/deal/image",[DealController::class,"uploadPhotos"])->name("deal.image");
 Route::controller(AuthController::class)->group(function () {
     Route::get("/login", "login_view")->name("login");
     Route::post("/login", "login")->name("login");

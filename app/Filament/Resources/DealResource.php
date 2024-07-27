@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DealResource\Pages;
 use App\Filament\Resources\DealResource\RelationManagers;
+use App\Helpers\CategoryHelper;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\Deal;
@@ -55,7 +56,7 @@ class DealResource extends Resource
                         titleAttribute: "category_id",
                         modifyQueryUsing: fn(Builder $query) => $query->where("can_have_children", 0),
                     )
-                    ->getOptionLabelFromRecordUsing(fn(Model $category) => $category->parent->category),
+                    ->getOptionLabelFromRecordUsing(fn(Model $category) => CategoryHelper::getCategoryChain($category->id)),
                 Grid::make(1)->schema([
                     RichEditor::make("description"),
                 ]),
@@ -81,7 +82,7 @@ class DealResource extends Resource
                                 }
                                 return SpecificationValue::where("specification_id", $get("specification_id"))->get()->pluck("value", "id");
                             })
-                    ])
+                    ])->collapsible()->collapsed()
                 ]),
 
             ]);

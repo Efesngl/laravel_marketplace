@@ -23,4 +23,8 @@ class Specification extends Model
     {
         return $this->hasMany(DealSpecification::class);
     }
+
+    public function categories(): BelongsToMany{
+        return $this->belongsToMany(Category::class);
+    }
 }

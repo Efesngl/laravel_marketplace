@@ -6,8 +6,14 @@
                 <form @submit.prevent="search()" class="flex flex-col">
                     <label for="search">Search</label>
                     <div class="flex flex-row gap-0">
-                        <input type="text" class="basis-3/4 text-black" name="search" id="search" v-model="s.search" />
-                        <button type="submit" class="basis-1/4 bg-yellow-400 text-white dark:bg-zinc-800">Search</button>
+                        <input
+                            type="text"
+                            class="basis-3/4 border-yellow-400 dark:border-zinc-800 text-black rounded-tl rounded-bl focus:ring-0 focus:border-yellow-400"
+                            name="search"
+                            id="search"
+                            v-model="s.search"
+                        />
+                        <button type="submit" class="basis-1/4 bg-yellow-400 text-white dark:bg-zinc-800 rounded-tr rounded-br">Search</button>
                     </div>
                 </form>
                 <div>
@@ -26,7 +32,7 @@
 
 <script>
 import MainLayout from "../../Layouts/MainLayout.vue";
-import { useForm, Link,router } from "@inertiajs/vue3";
+import { useForm, Link, router } from "@inertiajs/vue3";
 export default {
     components: {
         MainLayout,
@@ -57,7 +63,7 @@ export default {
             let index = this.recentSearches.indexOf(rs);
             this.recentSearches.unshift(this.recentSearches.splice(index, 1)[0]);
             localStorage.setItem("recentSearches", JSON.stringify(this.recentSearches));
-            router.get(route('search.result'),{search:rs})
+            router.get(route("search.result"), { search: rs });
         },
         removeRs(rs) {
             this.recentSearches = this.recentSearches.filter((val) => {

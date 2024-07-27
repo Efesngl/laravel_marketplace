@@ -1,14 +1,19 @@
+<style>
+    .p-tablist-tab-list {
+        justify-content: center !important;
+    }
+</style>
 <template>
     <MainLayout>
         <div class="min-h-svh h-auto flex flex-col gap-1">
             <h2 class="text-center text-2xl">{{ deal.title }}</h2>
             <div>
-                <Galleria :value="images" :numVisible="3" containerStyle="w-full" :showItemNavigators="true">
+                <Galleria :value="deal.images" :numVisible="3" containerStyle="w-full" :showItemNavigators="true">
                     <template #item="slotProps">
-                        <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%" />
+                        <img :src="slotProps.item.image" alt="image" style="width: 100%" />
                     </template>
                     <template #thumbnail="slotProps">
-                        <img :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt" />
+                        <img :src="slotProps.item.image" alt="image" />
                     </template>
                 </Galleria>
             </div>
@@ -23,7 +28,7 @@
             </div>
             <div>
                 <Tabs value="0">
-                    <TabList class="justify-between">
+                    <TabList class="!justify-center w-full">
                         <Tab value="0">Description</Tab>
                         <Tab value="1">Details</Tab>
                         <Tab value="2">Location</Tab>
@@ -76,35 +81,10 @@ export default {
         DataTable,
         Column
     },
-    data() {
-        return {
-            images: [
-                {
-                    itemImageSrc: "/storage/images/1/araba.jpg",
-                    thumbnailImageSrc: "/storage/images/1/araba.jpg",
-                    alt: "Description for Image 1",
-                    title: "Title 1",
-                },
-                {
-                    itemImageSrc: "/storage/images/1/araba2.jpg",
-                    thumbnailImageSrc: "/storage/images/1/araba2.jpg",
-                    alt: "Description for Image 1",
-                    title: "Title 1",
-                },
-                {
-                    itemImageSrc: "/storage/images/1/araba3.jpg",
-                    thumbnailImageSrc: "/storage/images/1/araba3.jpg",
-                    alt: "Description for Image 1",
-                    title: "Title 1",
-                },
-                {
-                    itemImageSrc: "/storage/images/1/araba4.jpg",
-                    thumbnailImageSrc: "/storage/images/1/araba4.jpg",
-                    alt: "Description for Image 1",
-                    title: "Title 1",
-                },
-            ],
-        };
+    mounted(){
+        this.deal.images.push({
+            image:this.deal.banner
+        })
     },
     props: {
         deal: Object,
