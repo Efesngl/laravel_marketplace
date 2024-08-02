@@ -1,35 +1,37 @@
 <template>
     <div class="container">
-        <nav id="navbar" class="fixed top-0 left-0 w-full bg-white dark:bg-zinc-900  text-black dark:text-white h-14 px-3 py-2 border-b border-yellow-400">
+        <nav id="navbar" class="fixed top-0 left-0 w-full bg-white dark:bg-zinc-900 text-black dark:text-white h-14 px-3 py-2 border-b border-yellow-400">
             <div class="flex flex-row justify-start items-center h-full">
                 <div id="back" v-if="backUrl">
                     <Link :href="backUrl"><fa-icon icon="fa-solid fa-arrow-left"></fa-icon></Link>
                 </div>
                 <div id="title" class="flex justify-center w-full items-center">
-                    <h1 class="text-xl h-fit capitalize">{{title}}</h1>
+                    <h1 class="text-xl h-fit capitalize">{{ title }}</h1>
                 </div>
             </div>
         </nav>
         <div class="h-auto box-border pt-16 w-svw" :class="bg">
-            <slot />
+            <transition name="fade" appear>
+                <slot></slot>
+            </transition>
         </div>
     </div>
 </template>
 
 <script>
 import { Link } from "@inertiajs/vue3";
-import BottomBar from "../Components/BottomBar.vue"
+import BottomBar from "../Components/BottomBar.vue";
 export default {
     props: {
-        bg:{
-            type:String,
+        bg: {
+            type: String,
         },
-        title:String,
-        backUrl:String
+        title: String,
+        backUrl: String,
     },
     components: {
         Link,
-        BottomBar
+        BottomBar,
     },
     data() {
         return {

@@ -10,8 +10,11 @@
             </div>
         </nav>
         <!-- <Navbar></Navbar> -->
+
         <div class="h-auto mb-20 mt-16 box-content w-svw" :class="bg">
-            <slot />
+            <transition name="fade" appear>
+                <slot></slot>
+            </transition>
         </div>
         <BottomBar></BottomBar>
         <!-- <Dock></Dock> -->
@@ -42,11 +45,11 @@ export default {
             if (html.classList.contains("light")) {
                 html.classList.remove("light");
                 html.classList.add("dark");
-                localStorage.setItem("colorScheme","dark")
+                localStorage.setItem("colorScheme", "dark");
             } else {
                 html.classList.remove("dark");
                 html.classList.add("light");
-                localStorage.setItem("colorScheme","light")
+                localStorage.setItem("colorScheme", "light");
             }
         },
     },
