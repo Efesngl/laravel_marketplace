@@ -1,5 +1,5 @@
 <template>
-    <div id="bottom-bar" class="h-16 flex flex-row justify-between px-3 text-c-white fixed bg-zinc-800 w-full bottom-0 left-0">
+    <div id="bottom-bar" class="h-16 z-50 flex flex-row justify-between px-3 text-c-white fixed bg-zinc-800 w-full bottom-0 left-0">
         <Link :href="route(ni.routeName)" v-for="ni in navItems" class="flex flex-col items-center justify-center" :class="{ 'text-yellow-400': route().current().includes(ni.routeName) }">
             <div class="bottom-bar-box flex flex-col">
                 <fa-icon :icon="'fa-solid ' + ni.icon" size="lg"></fa-icon>

@@ -21,6 +21,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 
 import PrimeVue from "primevue/config"
 import preset from "./preset"
+import ToastService from 'primevue/toastservice';
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
@@ -40,6 +41,7 @@ createInertiaApp({
                     }
                 },
             })
+            .use(ToastService)
             .mount(el);
     },
     progress: {

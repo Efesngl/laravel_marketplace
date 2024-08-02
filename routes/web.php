@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::controller(HomeController::class)->group(function () {
-    Route::get("/","index")->name("home");
+    Route::get("/", "index")->name("home");
 });
 Route::resource("/deal", DealController::class);
-Route::get("/category/{id}/specs",[CategoryController::class,"specs"])->name("category.specs");
-Route::post("/deal/image",[DealController::class,"uploadPhotos"])->name("deal.image");
+Route::controller(DealController::class)->group(function () {
+    Route::post("/deal/image", "uploadPhotos")->name("deal.image");
+    Route::delete("/deal/image/{id}", "deleteImage")->name("deal.deleteimage");
+    
+});
+Route::get("/category/{id}/specs", [CategoryController::class,"specs"])->name("category.specs");
 Route::controller(AuthController::class)->group(function () {
     Route::get("/login", "login_view")->name("login");
     Route::post("/login", "login")->name("login");
@@ -36,9 +40,9 @@ Route::prefix("/account")->middleware("auth")->group(function () {
     });
 });
 Route::controller(SearchController::class)->group(function () {
-    Route::get("/search","index")->name("search");
-    Route::get("/result","result")->name("search.result");
+    Route::get("/search", "index")->name("search");
+    Route::get("/result", "result")->name("search.result");
 });
 Route::controller(BrowseController::class)->prefix("/categories")->group(function () {
-    Route::get("/{cat?}","index")->name("browse.index");
+    Route::get("/{cat?}", "index")->name("browse.index");
 });

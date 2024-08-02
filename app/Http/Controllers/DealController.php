@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\Deal;
+use App\Models\DealImage;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -114,12 +115,17 @@ class DealController extends Controller
     {
         return $request->file("banner");
     }
+    public function deleteImage($id)
+    {
+        DealImage::destroy($id);
+    }
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         //
+
         $deal = Deal::with([
             "neighbourhood:name,id,district_id",
             "district:name,id",
@@ -140,6 +146,23 @@ class DealController extends Controller
     public function edit(string $id)
     {
         //
+        $deal = Deal::with([
+            "city:name,id",
+            "district:name,id,city_id",
+            "neighbourhood:name,id,district_id",
+            "category",
+            "images",
+            "specifications",
+        ])->findOrFail($id);
+
+        $categories = Category::with("children:category,parent_id,id,can_have_children", "specifications")->where("parent_id", 0)->select("category", "parent_id", "id", "can_have_children")->get();
+        $tree = $this->category_tree($categories, $deal->category_id);
+        $locations = City::with("districts:name,id,city_id", "districts.neighbourhoods:name,id,district_id")->select("name", "id")->get();
+        return Inertia::render("Deal/Edit", [
+            "dealProp" => $deal,
+            "categories" => $tree,
+            "locations" => $locations
+        ]);
     }
 
     /**
@@ -148,6 +171,45 @@ class DealController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validated = $request->validate([
+            "title" => ["required"],
+            "price" => ["required", "decimal:0,2", "gt:1"],
+            "description" => ["required", ""],
+            "category" => ["required", ""],
+            "city" => ["required", "integer"],
+            "district" => ["required", "integer"],
+            "nh" => ["required", "integer"],
+            "specifications" => ["required", "array"],
+            "isActive"=>["required","boolean"]
+        ]);
+        $deal = Deal::with("images", "specifications")->findOrFail($id);
+        $deal->title = $validated["title"];
+        $deal->price = $validated["price"];
+        $deal->description = $validated["description"];
+        $deal->city_id = $validated["city"];
+        $deal->district_id = $validated["district"];
+        $deal->neighbourhood_id = $validated["nh"];
+        $deal->category_id = $validated["category"];
+        $deal->is_active = 1;
+        if ($request->hasFile("banner")) {
+            $deal->banner = str_replace("public/", "", $request->file("banner")->store("public/images/banners"));
+        }
+        if ($request->hasFile("images")) {
+            $imageArr = [];
+            foreach ($request->file("images") as $file) {
+                array_push($imageArr, ["deal_id" => $deal->id, "image" => str_replace("public/", "", $file->store("public/images/{$deal->id}"))]);
+            }
+            $deal->images()->insert($imageArr);
+        }
+        foreach ($deal->specifications as $spec) {
+            $spec->value_id = $validated["specifications"][$spec->specification_id]["value_id"];
+            if ($spec->isDirty()) {
+                $spec->save();
+            }
+        }
+        if ($deal->isDirty()) {
+            $deal->save();
+        }
     }
 
     /**
