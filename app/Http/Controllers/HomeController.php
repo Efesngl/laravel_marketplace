@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     //
     public function index(){
-        $deals=Deal::all();
+        $deals=Deal::where("is_active","=",true)->get();
         return Inertia::render("Home",[
             "deals"=>$deals
         ]);

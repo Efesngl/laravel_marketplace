@@ -7,7 +7,7 @@
 }
 </style>
 <template>
-    <MainLayout>
+    <AccountLayout title="edit deal" :backUrl="route('account.index')">
         <div class="flex flex-col items-center gap-1">
             <h2 class="text-3xl p-2">Edit deal</h2>
             <div class="w-dvw">
@@ -210,12 +210,13 @@
             </div>
         </div>
         <Toast class="!w-80" />
-    </MainLayout>
+    </AccountLayout>
 </template>
 
 <script>
 import { router, useForm } from "@inertiajs/vue3";
 import MainLayout from "../../Layouts/MainLayout.vue";
+import AccountLayout from "../../Layouts/AccountLayout.vue";
 import Editor from "primevue/editor";
 import FileUpload from "primevue/fileupload";
 import TreeSelect from "primevue/treeselect";
@@ -258,6 +259,7 @@ export default {
         Message,
         Image,
         Toast,
+        AccountLayout
     },
     data() {
         return {
@@ -283,7 +285,7 @@ export default {
             images: [],
             banner: null,
             specifications: {},
-            isActive: true,
+            isActive: this.dealProp.is_active,
             _method: "PATCH",
         });
         this.setCategory(this.categories);
@@ -292,7 +294,6 @@ export default {
     },
     methods: {
         update() {
-            console.log(this.checkErrors());
             if (this.checkErrors()) {
                 this.deal.post(route("deal.update", { deal: this.dealProp.id }), {
                     onSuccess: () => {

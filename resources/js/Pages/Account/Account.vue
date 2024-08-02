@@ -5,25 +5,25 @@
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-1">
                     <h2 class="text-2xl">Deals</h2>
-                    <Link href="/" class="text-c-black text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Active Deals</Link>
-                    <Link href="/" class="text-c-black text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Inactive Deals</Link>
+                    <Link :href="route('account.deals',{status:'active'})" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Active Deals</Link>
+                    <Link :href="route('account.deals',{status:'inactive'})" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Inactive Deals</Link>
                 </div>
                 <div class="flex flex-col">
                     <h2 class="text-2xl">Messages</h2>
-                    <Link href="/" class="text-c-black text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Message box</Link>
+                    <Link href="/" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Message box</Link>
                 </div>
                 <div class="flex flex-col">
                     <h2 class="text-2xl">Favorites</h2>
-                    <Link href="/" class="text-c-black text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Favorite deals</Link>
+                    <Link href="/" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Favorite deals</Link>
                 </div>
                 <div class="flex flex-col gap-1">
                     <h2 class="text-2xl">Deals</h2>
-                    <Link href="/" class="text-c-black text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Selled</Link>
-                    <Link href="/" class="text-c-black text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Buyed</Link>
+                    <Link href="/" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Selled</Link>
+                    <Link href="/" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Buyed</Link>
                 </div>
                 <div class="flex flex-col">
                     <h2 class="text-2xl">Profile Management</h2>
-                    <Link :href="route('account.settings')" class="text-c-black text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Profile Management</Link>
+                    <Link :href="route('account.settings')" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Profile Management</Link>
                 </div>
                 <a :href="route('logout')" class="text-center text-red-500 text-xl p-2 dark:bg-zinc-900 bg-stone-50">Log out <fa-icon icon="fa-solid fa-arrow-right-from-bracket"></fa-icon></a>
             </div>

@@ -19,24 +19,25 @@ Route::resource("/deal", DealController::class);
 Route::controller(DealController::class)->group(function () {
     Route::post("/deal/image", "uploadPhotos")->name("deal.image");
     Route::delete("/deal/image/{id}", "deleteImage")->name("deal.deleteimage");
-    
+
 });
-Route::get("/category/{id}/specs", [CategoryController::class,"specs"])->name("category.specs");
+Route::get("/category/{id}/specs", [CategoryController::class, "specs"])->name("category.specs");
 Route::controller(AuthController::class)->group(function () {
-    Route::get("/login", "login_view")->name("login");
+    Route::get("/login", "loginView")->name("login");
     Route::post("/login", "login")->name("login");
-    Route::get("/register", "register_view")->name("register");
+    Route::get("/register", "registerView")->name("register");
     Route::post("/register", "register")->name("register");
     Route::get("/logout", "logout")->name("logout");
 });
 Route::prefix("/account")->middleware("auth")->group(function () {
-    Route::inertia("/", "Account/Account")->name("account");
+    Route::inertia("/", "Account/Account")->name("account.index");
     Route::controller(AccountController::class)->group(function () {
         Route::get("/settings", "index")->name("account.settings");
         Route::post("/profile", "updateProfile")->name("account.update.profile");
         Route::post("/email", "updateEmail")->name("account.update.email");
         Route::post("/password", "updatePassword")->name("account.update.password");
         Route::post("/phone", "updatePhone")->name("account.update.phone");
+        Route::get("/deals/{status}","deals")->name("account.deals");
     });
 });
 Route::controller(SearchController::class)->group(function () {

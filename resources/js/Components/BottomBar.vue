@@ -41,7 +41,7 @@ export default {
                 {
                     text: this.$page.props.auth.user != null ? "Account" : "Login",
                     icon: "fa-user",
-                    routeName: this.$page.props.auth.user != null ? "account" : "login",
+                    routeName: this.$page.props.auth.user != null ? "account.index" : "login",
                 },
             ],
         };

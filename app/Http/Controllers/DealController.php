@@ -135,6 +135,9 @@ class DealController extends Controller
             "specifications.value:id,value",
             "images:deal_id,image,id"
         ])->findOrFail($id);
+        if($deal->is_active==false){
+            abort(404);
+        }
         return Inertia::render("Deal/DealDetail", [
             "deal" => $deal
         ]);
@@ -190,7 +193,7 @@ class DealController extends Controller
         $deal->district_id = $validated["district"];
         $deal->neighbourhood_id = $validated["nh"];
         $deal->category_id = $validated["category"];
-        $deal->is_active = 1;
+        $deal->is_active = $validated["isActive"];
         if ($request->hasFile("banner")) {
             $deal->banner = str_replace("public/", "", $request->file("banner")->store("public/images/banners"));
         }

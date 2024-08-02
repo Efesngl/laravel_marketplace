@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deal;
 use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
@@ -15,7 +16,15 @@ class AccountController extends Controller
     {
         return Inertia::render("Account/AccountDetails");
     }
-
+    public function deals(Request $request,String $status){
+        if($status!="active" && $status!="inactive"){
+            abort(404);
+        }
+        $deals=User::find($request->user()->id)->deals()->where("is_active","=",($status=="active")?true:false)->get();
+        return Inertia::render("Account/MyDeals",[
+            "deals"=>$deals
+        ]);
+    }
     public function updateProfile(Request $request)
     {
         $profile = $request->validate([

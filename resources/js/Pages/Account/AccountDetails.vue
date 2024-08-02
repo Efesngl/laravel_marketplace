@@ -4,7 +4,7 @@
 }
 </style>
 <template>
-    <AccountLayout title="Account Details" :backUrl="route('account')">
+    <AccountLayout title="Account Details" :backUrl="route('account.index')">
         <div class="h-auto">
             <Tabs value="0" scrollable>
                 <TabList>

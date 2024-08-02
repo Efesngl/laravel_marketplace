@@ -4,12 +4,15 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     }
+    .p-card-body{
+        background: var(--p-surface-950) !important; 
+    }
 </style>
 <template>
-    <Link :href="route('deal.show', { deal: deal.id })">
-        <Card style="overflow: hidden;">
+    <Link :href="link">
+        <Card class="overflow-hidden bg-zinc-950">
             <template #header>
-                <img :src="deal.banner" alt="" class="w-full" />
+                <img :src="deal.banner" alt="" class="w-full max-h-36 h-36 contain-content" />
             </template>
             <template #title>
                 {{ deal.title }}
@@ -31,6 +34,7 @@ export default {
     },
     props: {
         deal: Object,
+        link:String
     },
 };
 </script>
