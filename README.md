@@ -19,13 +19,13 @@ An marketplace ecommerce app written with Laravel 11 and Vue.js 3(Inertia.js).
 Clone the project
 
 ```bash
-    git clone https://github.com/Efesngl/laravel_ecommerce
+    git clone https://github.com/Efesngl/laravel_marketplace
 ```
 
 Cd into project folder
 
 ```bash
-    cd laravel-ecommerce
+    cd laravel_marketplace
 ```
 
 Install dependencies
