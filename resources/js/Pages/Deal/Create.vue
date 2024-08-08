@@ -172,7 +172,6 @@ import StepList from "primevue/steplist";
 import StepPanels from "primevue/steppanels";
 import Step from "primevue/step";
 import StepPanel from "primevue/steppanel";
-import axios from "axios";
 import Message from "primevue/message";
 
 export default {
@@ -289,7 +288,7 @@ export default {
         },
         stepper(value) {
             if (value == 4) {
-                axios.get(route("category.specs", { id: this.deal.category })).then((res) => {
+                window.axios.get(route("category.specs", { id: this.deal.category })).then((res) => {
                     this.specifications = res.data.specifications;
                     console.log(this.specifications);
                 });

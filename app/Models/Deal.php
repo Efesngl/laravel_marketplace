@@ -14,14 +14,15 @@ use Illuminate\Support\Facades\Storage;
 class Deal extends Model
 {
     use HasFactory;
-    protected $fillable = ["title", "price", "description", "user_id", "is_active","category_id","banner"];
+    protected $fillable = ["title", "price", "description", "user_id", "is_active", "category_id", "banner"];
 
     protected function banner(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => Storage::url($value),
+            get: fn(string $value) => Storage::url($value),
         );
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -31,19 +32,29 @@ class Deal extends Model
     {
         return $this->belongsTo(Category::class);
     }
-    public function specifications():HasMany{
-        return $this->hasMany(DealSpecification::class)->select("id","specification_id","deal_id","value_id");
+    public function specifications(): HasMany
+    {
+        return $this->hasMany(DealSpecification::class)->select("id", "specification_id", "deal_id", "value_id");
     }
-    public function city():BelongsTo{
+    public function city(): BelongsTo
+    {
         return $this->belongsTo(City::class);
     }
-    public function district():BelongsTo{
+    public function district(): BelongsTo
+    {
         return $this->belongsTo(District::class);
     }
-    public function neighbourhood():BelongsTo{
+    public function neighbourhood(): BelongsTo
+    {
         return $this->belongsTo(Neighbourhood::class);
     }
-    public function images():HasMany{
+    public function images(): HasMany
+    {
         return $this->hasMany(DealImage::class);
+    }
+
+    public function chats(): HasMany
+    {
+        return $this->hasMany(Chat::class);
     }
 }

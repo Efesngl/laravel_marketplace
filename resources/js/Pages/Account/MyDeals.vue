@@ -1,5 +1,5 @@
 <template>
-    <AccountLayout bg="bg-stone-200 dark:bg-zinc-900" title="Deals" :backUrl="route('account.index')">
+    <AccountLayout title="Deals" :backUrl="route('account.index')">
         <div class="h-[calc(100svh-56px)] flex flex-col gap-4 p-2">
             <h1 class="text-center text-3xl">Deals</h1>
             <div class="grid gap-1 grid-cols-2 p-3 md:grid-cols-5" v-if="deals.length > 0">

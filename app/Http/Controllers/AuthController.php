@@ -12,10 +12,10 @@ use Inertia\Inertia;
 class AuthController extends Controller
 {
     //
-    public function login_view()
+    public function loginView()
     {
         if (!is_null(Auth::user())) {
-            return back();
+            return redirect()->route("home");
         }
         return Inertia::render("Auth/Login");
     }
@@ -27,17 +27,17 @@ class AuthController extends Controller
         ]);
         if (Auth::attempt($cred, $request->input("remember"))) {
             $request->session()->regenerate();
-            return redirect()->intended(route("account"));
+            return redirect()->intended(route("account.index"));
         }
         return back()->withErrors([
             "credentials"=>"Lütfen girdiğiniz bilgileri kontrol ediniz !"
         ]);
     }
 
-    public function register_view()
+    public function registerView()
     {
         if (!is_null(Auth::user())) {
-            return back();
+            return redirect()->route("home");
         }
         return Inertia::render("Auth/Register");
     }

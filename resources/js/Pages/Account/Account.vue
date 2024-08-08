@@ -1,5 +1,5 @@
 <template>
-    <AccountLayout bg="bg-stone-200 dark:bg-zinc-900" title="Account" :backUrl="route('home')">
+    <AccountLayout bg="" title="Account" :backUrl="route('home')">
         <div class="h-[calc(100svh-56px)] flex flex-col gap-4 p-2">
             <h1 class="text-center text-3xl">My Account</h1>
             <div class="flex flex-col gap-4">
@@ -10,7 +10,7 @@
                 </div>
                 <div class="flex flex-col">
                     <h2 class="text-2xl">Messages</h2>
-                    <Link href="/" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Message box</Link>
+                    <Link :href="route('account.chats.index')" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Message box</Link>
                 </div>
                 <div class="flex flex-col">
                     <h2 class="text-2xl">Favorites</h2>

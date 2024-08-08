@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -49,7 +50,17 @@ class User extends Authenticatable
         ];
     }
 
-    public function deals(): HasMany{
+    public function deals(): HasMany
+    {
         return $this->hasMany(Deal::class);
+    }
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function chats():BelongsToMany
+    {
+        return $this->belongsToMany(Chat::class);
     }
 }

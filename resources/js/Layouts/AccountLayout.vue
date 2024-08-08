@@ -1,21 +1,21 @@
 <template>
-    <div class="container">
-        <nav id="navbar" class="fixed top-0 left-0 w-full bg-white dark:bg-zinc-900 text-black dark:text-white h-14 px-3 py-2 border-b border-yellow-400">
-            <div class="flex flex-row justify-start items-center h-full">
-                <div id="back" v-if="backUrl">
-                    <Link :href="backUrl"><fa-icon icon="fa-solid fa-arrow-left"></fa-icon></Link>
+    <transition name="fade" appear>
+        <div class="container">
+            <nav id="navbar" class="fixed top-0 left-0 w-full bg-white dark:bg-zinc-900 text-black dark:text-white h-14 px-3 py-2 border-b border-yellow-400">
+                <div class="flex flex-row justify-start items-center h-full">
+                    <div id="back" v-if="backUrl">
+                        <Link :href="backUrl"><fa-icon icon="fa-solid fa-arrow-left"></fa-icon></Link>
+                    </div>
+                    <div id="title" class="flex justify-center w-full items-center">
+                        <h1 class="text-xl h-fit capitalize">{{ title }}</h1>
+                    </div>
                 </div>
-                <div id="title" class="flex justify-center w-full items-center">
-                    <h1 class="text-xl h-fit capitalize">{{ title }}</h1>
-                </div>
-            </div>
-        </nav>
-        <div class="h-auto box-border pt-16 w-svw" :class="bg">
-            <transition name="fade" appear>
+            </nav>
+            <div class="h-auto box-border pt-16 w-svw bg-stone-200 dark:bg-zinc-900">
                 <slot></slot>
-            </transition>
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>

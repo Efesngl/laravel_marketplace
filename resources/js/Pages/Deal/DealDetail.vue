@@ -1,10 +1,10 @@
 <style>
-    .p-tablist-tab-list {
-        justify-content: center !important;
-    }
+.p-tablist-tab-list {
+    justify-content: center !important;
+}
 </style>
 <template>
-    <MainLayout>
+    <AccountLayout title="deal" :backUrl="route('home')">
         <div class="min-h-svh h-auto flex flex-col gap-1">
             <h2 class="text-center text-2xl">{{ deal.title }}</h2>
             <div>
@@ -23,7 +23,9 @@
                     <a href="/" class="text-blue-500">{{ deal.user.name }}</a>
                 </div>
                 <div id="address" class="text-center">
-                    <a class="text-blue-500">{{deal.city.name}}</a><small>/</small><a class="text-blue-500">{{ deal.district.name }}</a><small>/</small><a class="text-blue-500">{{ deal.neighbourhood.name }}</a>
+                    <a class="text-blue-500">{{ deal.city.name }}</a
+                    ><small>/</small><a class="text-blue-500">{{ deal.district.name }}</a
+                    ><small>/</small><a class="text-blue-500">{{ deal.neighbourhood.name }}</a>
                 </div>
             </div>
             <div>
@@ -48,30 +50,68 @@
                             </p>
                         </TabPanel>
                         <TabPanel value="2">
-                            <p class="m-0">
-                                Location
-                            </p>
+                            <p class="m-0">Location</p>
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
             </div>
         </div>
-    </MainLayout>
+        <div class="w-full flex flex-row justify-between gap-1 sticky bottom-0 left-0 bg-zinc-900 p-3">
+            <a :href="route('home')" class="text-center bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded">Buy</a>
+            <button
+                v-if="chat == null"
+                @click="
+                    () => {
+                        this.sendMessageDialogVisible = true;
+                    }
+                "
+                class="bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded"
+            >
+                Send message
+            </button>
+            <Link v-else :href="route('account.chats.show', { chatID: chat.id })" class="text-center bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded">Go to chat</Link>
+        </div>
+    </AccountLayout>
+    <Dialog contentClass="w-80 flex flex-col items-center gap-2" v-model:visible="sendMessageDialogVisible" modal :draggable="false">
+        <h5 class="text-lg">Send an message</h5>
+        <InputText @keypress.enter="sendMessage" v-model="message.message" fluid></InputText>
+        <div class="flex flex-col gap-1 w-full">
+            <button @click="sendMessage" class="bg-emerald-400 rounded-lg p-2 w-full">Send</button>
+            <button
+                @click="
+                    () => {
+                        sendMessageDialogVisible = false;
+                    }
+                "
+                class="w-full bg-red-400 rounded-lg p-2"
+            >
+                Cancel
+            </button>
+        </div>
+    </Dialog>
+    <Toast class="w-80"></Toast>
 </template>
 
 <script>
-import MainLayout from "../../Layouts/MainLayout.vue";
 import Galleria from "primevue/galleria";
-import Tabs from 'primevue/tabs';
-import TabList from 'primevue/tablist';
-import Tab from 'primevue/tab';
-import TabPanels from 'primevue/tabpanels';
-import TabPanel from 'primevue/tabpanel';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
+import Tabs from "primevue/tabs";
+import TabList from "primevue/tablist";
+import Tab from "primevue/tab";
+import TabPanels from "primevue/tabpanels";
+import TabPanel from "primevue/tabpanel";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import AccountLayout from "@/Layouts/AccountLayout.vue";
+import Dialog from "primevue/dialog";
+import InputText from "primevue/inputtext";
+import { Link, useForm } from "@inertiajs/vue3";
+import Toast from "primevue/toast";
 export default {
+    props: {
+        deal: Object,
+        chat: Object,
+    },
     components: {
-        MainLayout,
         Galleria,
         Tabs,
         TabList,
@@ -79,15 +119,38 @@ export default {
         TabPanel,
         TabPanels,
         DataTable,
-        Column
+        Column,
+        AccountLayout,
+        InputText,
+        Dialog,
+        Link,
+        Toast,
     },
-    mounted(){
+    mounted() {
         this.deal.images.push({
-            image:this.deal.banner
-        })
+            image: this.deal.banner,
+        });
     },
-    props: {
-        deal: Object,
+    data() {
+        return {
+            sendMessageDialogVisible: false,
+            message: useForm({
+                message: null,
+                receiverID: this.deal.user.id,
+                dealId: this.deal.id,
+            }),
+        };
+    },
+    methods: {
+        sendMessage() {
+            this.message.post(route("chat.store"), {
+                onSuccess: (page) => {
+                    this.$toast.add({ severity: "success", summary: "Message sent", life: 3000 });
+                    this.sendMessageDialogVisible=false
+                    this.message.reset("message")
+                },
+            });
+        },
     },
 };
 </script>

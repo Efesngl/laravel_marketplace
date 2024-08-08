@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Chat;
 use App\Models\City;
 use App\Models\Deal;
 use App\Models\DealImage;
@@ -127,19 +128,22 @@ class DealController extends Controller
         //
 
         $deal = Deal::with([
+            "chats.users",
             "neighbourhood:name,id,district_id",
             "district:name,id",
             "city:name,id",
             "user:id,name,email,phone_number",
             "specifications.specification:id,specification",
             "specifications.value:id,value",
-            "images:deal_id,image,id"
+            "images:deal_id,image,id",
         ])->findOrFail($id);
-        if($deal->is_active==false){
+        $user_chat=Chat::where("deal_id",$id)->whereRelation("users","user_id",auth()->user()->id)->select("id","deal_id","name")->first();
+        if ($deal->is_active == false) {
             abort(404);
         }
         return Inertia::render("Deal/DealDetail", [
-            "deal" => $deal
+            "deal" => $deal,
+            "chat"=>$user_chat
         ]);
     }
 
@@ -183,7 +187,7 @@ class DealController extends Controller
             "district" => ["required", "integer"],
             "nh" => ["required", "integer"],
             "specifications" => ["required", "array"],
-            "isActive"=>["required","boolean"]
+            "isActive" => ["required", "boolean"]
         ]);
         $deal = Deal::with("images", "specifications")->findOrFail($id);
         $deal->title = $validated["title"];

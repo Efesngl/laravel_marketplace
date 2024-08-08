@@ -59,7 +59,7 @@
                                         <Select @change="setLocation($event, 2)" v-model="selectedNH" :options="selectedDistrict.neighbourhoods" option-label="name"></Select>
                                         <Message severity="error" class="mt-1" v-if="deal.errors.nh">{{ deal.errors.nh }}</Message>
                                     </div>
-                                    <div class="w-full flex flex-row gap-1"><ToggleSwitch v-model="deal.isActive"></ToggleSwitch> <span>Is deal active</span></div>
+                                    <div class="w-full flex flex-row gap-1"><ToggleSwitch v-model="deal.isActive" :trueValue="1" :falseValue="0"></ToggleSwitch> <span>Is deal active</span></div>
                                 </div>
                                 <div class="w-full">
                                     <button class="w-full bg-emerald-400 text-white p-2 rounded" @click="update()">Save</button>
@@ -209,7 +209,7 @@
                 </Tabs>
             </div>
         </div>
-        <Toast class="!w-80" />
+        <Toast class="" />
     </AccountLayout>
 </template>
 
@@ -224,7 +224,6 @@ import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import RadioButton from "primevue/radiobutton";
 import Select from "primevue/select";
-import axios from "axios";
 import Message from "primevue/message";
 import Image from "primevue/image";
 
@@ -299,7 +298,7 @@ export default {
                     onSuccess: () => {
                         this.deal.images = [];
                         this.deal.banner = null;
-                        this.$toast.add({ severity: "success", summary: "Deal updated!", life: 3000 });
+                        this.$toast.add({ severity: "success", summary: "Deal updated",life:3000 });
                     },
                 });
             } else {
@@ -358,7 +357,7 @@ export default {
         },
         tabs(value) {
             if (value == 5) {
-                axios.get(route("category.specs", { id: this.deal.category })).then((res) => {
+                window.axios.get(route("category.specs", { id: this.deal.category })).then((res) => {
                     this.specifications = res.data;
                 });
             }
