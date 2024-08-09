@@ -57,4 +57,7 @@ class Deal extends Model
     {
         return $this->hasMany(Chat::class);
     }
+    public function favorites():HasMany{
+        return $this->hasMany(Favorite::class);
+    }
 }

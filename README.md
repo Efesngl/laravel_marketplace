@@ -7,8 +7,6 @@ An marketplace ecommerce app written with Laravel 11 and Vue.js 3(Inertia.js).
 ## Things that will be added
 
 - Desktop layout
-
-- Favorite deals
 - Payment system
 - Mobile desing improvments
 - Chat system improvments

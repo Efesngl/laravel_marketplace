@@ -63,4 +63,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Chat::class);
     }
+    public function favorites():HasMany{
+        return $this->hasMany(Favorite::class);
+    }
 }

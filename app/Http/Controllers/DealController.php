@@ -136,6 +136,9 @@ class DealController extends Controller
             "specifications.specification:id,specification",
             "specifications.value:id,value",
             "images:deal_id,image,id",
+            "favorites"=>function(Builder $builder){
+                $builder->where("user_id","=", auth()->user()->id)->select("id","deal_id","user_id");
+            }
         ])->findOrFail($id);
         $user_chat=Chat::where("deal_id",$id)->whereRelation("users","user_id",auth()->user()->id)->select("id","deal_id","name")->first();
         if ($deal->is_active == false) {

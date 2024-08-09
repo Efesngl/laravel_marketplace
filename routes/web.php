@@ -6,6 +6,7 @@ use App\Http\Controllers\BrowseController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DealController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
@@ -48,6 +49,11 @@ Route::prefix("/account")->middleware("auth")->group(function () {
     });
     Route::controller(MessageController::class)->group(function(){
         Route::post("/message/{chatID}","store")->name("message.store");
+    });
+    Route::controller(FavoriteController::class)->group(function(){
+        Route::get("/favorites","index")->name("account.favorites.index");
+        Route::post("/favorites","store")->name("favorites.store");
+        Route::delete("/favorites/{favID}","destroy")->name("favorites.destroy");
     });
 });
 Route::controller(SearchController::class)->group(function () {

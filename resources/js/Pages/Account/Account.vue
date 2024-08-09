@@ -14,7 +14,7 @@
                 </div>
                 <div class="flex flex-col">
                     <h2 class="text-2xl">Favorites</h2>
-                    <Link href="/" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Favorite deals</Link>
+                    <Link :href="route('account.favorites.index')" class="text-white text-xl dark:bg-zinc-800 dark:text-white rounded p-2 bg-stone-50">Favorite deals</Link>
                 </div>
                 <div class="flex flex-col gap-1">
                     <h2 class="text-2xl">Deals</h2>

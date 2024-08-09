@@ -2,9 +2,17 @@
 .p-tablist-tab-list {
     justify-content: center !important;
 }
+.p-galleria-prev-icon,
+.p-galleria-next-icon {
+    mix-blend-mode: difference;
+}
 </style>
 <template>
     <AccountLayout title="deal" :backUrl="route('home')">
+        <template v-slot:navButton>
+            <Button @click="addToFav" icon="pi pi-star" text v-if="deal.favorites.length == 0"></Button>
+            <Button @click="removeFromFav" icon="pi pi-star-fill" class="text-yellow-400" text v-else></Button>
+        </template>
         <div class="min-h-svh h-auto flex flex-col gap-1">
             <h2 class="text-center text-2xl">{{ deal.title }}</h2>
             <div>
@@ -106,6 +114,8 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import { Link, useForm } from "@inertiajs/vue3";
 import Toast from "primevue/toast";
+import Button from "primevue/button";
+import axios from "axios";
 export default {
     props: {
         deal: Object,
@@ -125,6 +135,7 @@ export default {
         Dialog,
         Link,
         Toast,
+        Button,
     },
     mounted() {
         this.deal.images.push({
@@ -146,9 +157,20 @@ export default {
             this.message.post(route("chat.store"), {
                 onSuccess: (page) => {
                     this.$toast.add({ severity: "success", summary: "Message sent", life: 3000 });
-                    this.sendMessageDialogVisible=false
-                    this.message.reset("message")
+                    this.sendMessageDialogVisible = false;
+                    this.message.reset("message");
                 },
+            });
+        },
+        addToFav() {
+            axios.post(route("favorites.store"), { dealID: this.deal.id }).then((e) => {
+                this.deal.favorites[0] = e.data;
+            });
+        },
+        removeFromFav() {
+            console.log(this.deal.favorites.id);
+            axios.delete(route("favorites.destroy", { favID: this.deal.favorites[0].id })).then((e) => {
+                this.deal.favorites = [];
             });
         },
     },
