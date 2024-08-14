@@ -221,9 +221,9 @@ export default {
         create() {
             this.deal.post(route("deal.store"), {
                 forceFormData: true,
-                onSuccess:()=>{
-                    alert("created")
-                }
+                onSuccess: () => {
+                    alert("created");
+                },
             });
         },
         checkStep1(cb) {
@@ -289,8 +289,7 @@ export default {
         stepper(value) {
             if (value == 4) {
                 window.axios.get(route("category.specs", { id: this.deal.category })).then((res) => {
-                    this.specifications = res.data.specifications;
-                    console.log(this.specifications);
+                    this.specifications = res.data;
                 });
             }
         },

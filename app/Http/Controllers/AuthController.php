@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Iyzico;
 use App\Models\User;
+use Carbon\Carbon;
 use DateInterval;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -45,21 +48,39 @@ class AuthController extends Controller
     {
         $today=new DateTime();
         $today->sub(new DateInterval("P18Y"));
-        $cred = $request->validate([
+        $request->validate([
             "name" => ["required"],
-            "email" => ["email", "required", "unique:App\Models\User,email"],
+            "email" => ["email", "required", "unique:users,email"],
             "gender"=>["required"],
             "birthDate"=>["required","date","before_or_equal:{$today->format('Y-m-d')}"],
             "password" => ["required", "confirmed"],
+            "tcno"=>["required","digits:11","unique:users,tc_no"],
+            "address"=>["required"],
+            "iban"=>["required","max:33"]
         ]);
+        $birthDate=Carbon::parse($request->birthDate);
         $user = new User;
-        $user->name = $cred["name"];
-        $user->email = $cred["email"];
-        $user->password = $cred["password"];
-        $user->gender=$cred["gender"];
-        $user->birth_date=$cred["birthDate"];
-        $user->save();
-        if (Auth::attempt(["email"=>$user->email,"password"=> $cred["password"]])) {
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->gender=$request->gender;
+        $user->birth_date=$birthDate->toDateString();
+        $user->tc_no=$request->tcno;
+        $user->address=$request->address;
+        $user->iban=str_replace(" ","",$request->iban);
+        if($user->save()){
+            try{
+                $iyzico=new Iyzico();
+                $submerchant=$iyzico->createSubMerchant($user);
+                $user->sub_merchant_key=$submerchant->getSubMerchantKey();
+                $user->save();
+            }catch(Exception $e){
+                return redirect()->back()->withErrors([
+                    "subMerchantError"=>$e->getMessage()
+                ]);
+            }
+        }
+        if (Auth::attempt(["email"=>$user->email,"password"=> $request->password])) {
             $request->session()->regenerate();
             return redirect()->intended(route("account.settings"));
         } 

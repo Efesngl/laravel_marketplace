@@ -209,7 +209,7 @@
                 </Tabs>
             </div>
         </div>
-        <Toast class="" />
+        <Toast class="!w-80" />
     </AccountLayout>
 </template>
 

@@ -65,7 +65,10 @@
             </div>
         </div>
         <div class="w-full flex flex-row justify-between gap-1 sticky bottom-0 left-0 bg-zinc-900 p-3">
-            <a :href="route('home')" class="text-center bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded">Buy</a>
+            <a :href="route('home')" class="bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex flex-col justify-center items-center hover:opacity-50 transition">
+                <span>Buy</span>
+                <small class="text-sm">{{ deal.price }} TL</small>
+            </a>
             <button
                 v-if="chat == null"
                 @click="
@@ -73,11 +76,11 @@
                         this.sendMessageDialogVisible = true;
                     }
                 "
-                class="bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded"
+                class="bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex items-center justify-center hover:opacity-50 transition"
             >
-                Send message
+                <span>Send message</span>
             </button>
-            <Link v-else :href="route('account.chats.show', { chatID: chat.id })" class="text-center bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded">Go to chat</Link>
+            <Link v-else :href="route('account.chats.show', { chatID: chat.id })" class="text-center bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex items-center justify-center hover:opacity-50 transition">Go to chat</Link>
         </div>
     </AccountLayout>
     <Dialog contentClass="w-80 flex flex-col items-center gap-2" v-model:visible="sendMessageDialogVisible" modal :draggable="false">
@@ -97,7 +100,7 @@
             </button>
         </div>
     </Dialog>
-    <Toast class="w-80"></Toast>
+    <Toast class="!w-80"></Toast>
 </template>
 
 <script>

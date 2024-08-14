@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Deal;
 use App\Models\User;
+use Carbon\Carbon;
+use DateTime;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -16,27 +18,35 @@ class AccountController extends Controller
     {
         return Inertia::render("Account/AccountDetails");
     }
-    public function deals(Request $request,String $status){
-        if($status!="active" && $status!="inactive"){
+    public function deals(Request $request, string $status)
+    {
+        if ($status != "active" && $status != "inactive") {
             abort(404);
         }
-        $deals=User::find($request->user()->id)->deals()->where("is_active","=",($status=="active")?true:false)->get();
-        return Inertia::render("Account/MyDeals",[
-            "deals"=>$deals
+        $deals = User::find($request->user()->id)->deals()->where("is_active", "=", ($status == "active") ? true : false)->get();
+        return Inertia::render("Account/MyDeals", [
+            "deals" => $deals
         ]);
     }
     public function updateProfile(Request $request)
     {
+        $today = new DateTime();
+        $today->sub(new \DateInterval("P18Y"));
         $profile = $request->validate([
             "name" => ["required"],
-            "birthDate" => ["required", "date"],
+            "birthDate" => ["required", "date", "before_or_equal:{$today->format('Y-m-d')}"],
             "gender" => ["required"],
+            "iban"=>["required",Rule::unique("users","iban")->ignore(auth()->user()->id)],
+            "address"=>["required"]
         ]);
-        $user = User::find($request->user()->id);
+        $date = Carbon::parse($request->birthDate)->setTimezone(config("app.timezone"));
+        $user = auth()->user();
         $user->name = $profile["name"];
         $user->gender = $profile["gender"];
-        $user->birth_date = $profile["birthDate"];
-        $user->save();
+        $user->birth_date = $date->toDateString();
+        if($user->isDirty()){
+            $user->save();
+        }
         return response("", 200);
     }
 
@@ -54,30 +64,25 @@ class AccountController extends Controller
     }
     public function updatePhone(Request $request)
     {
-        $pn = $request->validate([
-            "phoneNumber" => ["required","size:10", Rule::unique("users","phone_number")->ignore($request->user()->id)],
+        $request->validate([
+            "phoneNumber" => ["required", "size:10", Rule::unique("users", "phone_number")->ignore($request->user()->id)],
         ]);
-        $user = User::find($request->user()->id);
-        if ($user->phone_number != $pn["phoneNumber"]) {
-            $user->phone_number = $pn["phoneNumber"];
-            $user->save();
-        }
+        $user = auth()->user();
+        $user->phone_number=$request->phoneNumber;
+        if($user->isDirty()) $user->save();
         return response("", 200);
     }
 
     public function updatePassword(Request $request)
     {
-        $password= $request->validate([
-            "oldPassword"=>["required"],
-            "newPassword"=>["required","confirmed"]
+        $password = $request->validate([
+            "oldPassword" => ["required","current_password"],
+            "newPassword" => ["required", "confirmed"]
         ]);
-        $user=User::find($request->user()->id);
-        if(!Hash::check($password["oldPassword"],$user->password)){
-            return back()->withErrors(["oldPassword"=> "Incorrect Password !"]);
-        }
-        $user->password= $password["newPassword"];
-        $user->save();
-        return response("",200);
+        $user = auth()->user();
+        $user->password = $password["newPassword"];
+        if($user->isDirty()) $user->save();
+        return response("", 200);
     }
 
 

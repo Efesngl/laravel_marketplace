@@ -21,23 +21,37 @@
                                 <div class="flex flex-col gap-4 p-2">
                                     <div class="flex flex-col" id="account-detail-name">
                                         <label for="name">Name</label>
-                                        <input type="text" name="name" id="name" v-model="account.name" />
+                                        <InputText type="text" name="name" id="name" v-model="account.name" />
+                                        <Message severity="error" class="mt-1" v-if="account.errors.name">{{ account.errors.name }}</Message>
                                     </div>
                                     <div class="flex flex-col">
                                         <label for="birth-date">Birth date</label>
-                                        <input type="date" name="birth-date" class="w-full" id="birth-date" v-model="account.birthDate" :max="maxDate()" />
+                                        <DatePicker name="birth-date" showIcon date-format="yy-mm-dd" class="w-full" id="birth-date" v-model="account.birthDate" :maxDate="maxDate()" />
+                                        <Message severity="error" class="mt-1" v-if="account.errors.birthDate">{{ account.errors.birthDate }}</Message>
                                     </div>
                                     <div class="flex flex-col">
-                                        <h4 for="birth-date">Cinsiyet</h4>
+                                        <label for="iban">Iban</label>
+                                        <InputText name="iban" class="w-full" id="iban" v-model="account.iban" />
+                                        <Message severity="error" class="mt-1" v-if="account.errors.iban">{{ account.errors.iban }}</Message>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <label for="address">Address</label>
+                                        <InputText name="address" class="w-full" id="address" v-model="account.address" />
+                                        <Message severity="error" class="mt-1" v-if="account.errors.address">{{ account.errors.address }}</Message>
+                                    </div>
+                                    
+                                    <div class="flex flex-col">
+                                        <h4 for="birth-date">Gender</h4>
                                         <div class="flex flex-row items-center justify-start gap-1">
-                                            <input type="radio" name="gender" :value="0" id="gender_male" v-model="account.gender" />
+                                            <RadioButton type="radio" name="gender" :value="0" inputId="gender_male" v-model="account.gender" />
                                             <label for="gender_male">Male</label>
-                                            <input type="radio" name="gender" :value="1" id="gender_female" v-model="account.gender" />
+                                            <RadioButton type="radio" name="gender" :value="1" inputId="gender_female" v-model="account.gender" />
                                             <label for="gender_female">Female</label>
                                         </div>
+                                        <Message severity="error" class="mt-1" v-if="account.errors.gender">{{ account.errors.gender }}</Message>
                                     </div>
                                     <div class="flex justify-center">
-                                        <button class="text-center bg-yellow-400 text-c-white p-2">Update</button>
+                                        <Button type="submit" class="text-center p-2" label="Update"></Button>
                                     </div>
                                 </div>
                             </form>
@@ -50,11 +64,11 @@
                                 <div class="flex flex-col gap-4 p-2" id="account-detail-email">
                                     <div class="flex flex-col">
                                         <label for="email">Email</label>
-                                        <span v-if="email.errors.email" class="text-red-500">{{ email.errors.email }}</span>
-                                        <input @keypress="clearErrors(email)" type="text" name="email" id="email" v-model="email.email" />
+                                        <InputText @keypress.enter.prevent="updateEmail" type="text" name="email" id="email" v-model="email.email" />
+                                        <Message severity="error" class="mt-1" v-if="email.errors.email">{{ email.errors.email }}</Message>
                                     </div>
                                     <div class="flex justify-center">
-                                        <button class="text-center bg-yellow-400 text-c-white p-2 disabled:opacity-50" :disabled="email.email == user.email">Update</button>
+                                        <Button type="submit" class="text-center p-2 disabled:opacity-50" :disabled="email.email == this.$page.props.auth.user.email" label="Update"></Button>
                                     </div>
                                 </div>
                             </form>
@@ -68,10 +82,11 @@
                                     <div class="flex flex-col">
                                         <label for="phoneNumber">Phone number</label>
                                         <small>Without the 0 at the start !</small>
-                                        <input type="number" @keypress="checkLenght" name="phoneNumber" id="phoneNumber" v-model="phoneNumber.phoneNumber" />
+                                        <InputText type="text" name="phoneNumber" id="phoneNumber" v-model="phoneNumber.phoneNumber" />
+                                        <Message severity="error" class="mt-1" v-if="phoneNumber.errors.phoneNumber">{{ phoneNumber.errors.phoneNumber }}</Message>
                                     </div>
                                     <div class="flex justify-center">
-                                        <button class="text-center bg-yellow-400 text-c-white p-2">Update</button>
+                                        <Button type="submit" class="text-center p-2" label="Update"></Button>
                                     </div>
                                 </div>
                             </form>
@@ -84,16 +99,16 @@
                                 <div class="flex flex-col gap-4 p-2" id="account-detail-password">
                                     <div class="flex flex-col">
                                         <label for="name">Old Password</label>
-                                        <small class="text-red-500" v-if="password.errors.oldPassword">{{ password.errors.oldPassword }}</small>
-                                        <input type="text" name="old-password" id="old-password" v-model="password.oldPassword" />
+                                        <InputText type="text" name="old-password" id="old-password" v-model="password.oldPassword" />
+                                        <Message severity="error" class="mt-1" v-if="password.errors.oldPassword">{{ password.errors.oldPassword }}</Message>
                                         <label for="name">New Password</label>
-                                        <small class="text-red-500" v-if="password.errors.newPassword">{{ password.errors.newPassword }}</small>
-                                        <input type="text" name="new-password" id="new-password" v-model="password.newPassword" />
-                                        <label for="name">New Password</label>
-                                        <input type="text" name="new-password-confirmation" id="new-password-confirmation" v-model="password.newPassword_confirmation" />
+                                        <InputText type="text" name="new-password" id="new-password" v-model="password.newPassword" />
+                                        <Message severity="error" class="mt-1" v-if="password.errors.newPassword">{{ password.errors.newPassword }}</Message>
+                                        <label for="name">New Password again</label>
+                                        <InputText type="text" name="new-password-confirmation" id="new-password-confirmation" v-model="password.newPassword_confirmation" />
                                     </div>
                                     <div class="flex justify-center">
-                                        <button type="submit" class="text-center bg-yellow-400 text-c-white p-2">Update</button>
+                                        <Button type="submit" class="text-center p-2" label="Update"></Button>
                                     </div>
                                 </div>
                             </form>
@@ -102,6 +117,7 @@
                 </TabPanels>
             </Tabs>
         </div>
+        <Toast class="!w-80"></Toast>
     </AccountLayout>
 </template>
 
@@ -113,6 +129,12 @@ import TabList from "primevue/tablist";
 import Tab from "primevue/tab";
 import TabPanels from "primevue/tabpanels";
 import TabPanel from "primevue/tabpanel";
+import InputText from "primevue/inputtext";
+import DatePicker from "primevue/datepicker";
+import RadioButton from "primevue/radiobutton";
+import Message from "primevue/message";
+import Toast from "primevue/toast";
+import Button from "primevue/button";
 export default {
     components: {
         AccountLayout,
@@ -122,32 +144,37 @@ export default {
         TabPanel,
         TabPanels,
         Tab,
+        InputText,
+        DatePicker,
+        RadioButton,
+        Message,
+        Toast,
+        Button
     },
     methods: {
         maxDate() {
             let date = new Date();
             date.setFullYear(date.getFullYear() - 18);
-            date.setMonth(date.getMonth() + 1);
             let month = date.getMonth();
             if (month < 10) {
                 month = `0${month}`;
             }
-            date = `${date.getFullYear()}-${month}-${date.getDate()}`;
+            date.setMonth(month)
             return date;
         },
         updateProfile() {
             this.account.post(route("account.update.profile"), {
-                onSuccess: () => this.$swal(this.swalOptions),
+                onSuccess: () =>this.$toast.add({ severity: 'success', summary: 'Profile updated', life: 3000 })
             });
         },
         updateEmail() {
             this.email.post(route("account.update.email"), {
-                onSuccess: () => this.$swal(this.swalOptions),
+                onSuccess: () => this.$toast.add({ severity: 'success', summary: 'Email updated', life: 3000 })
             });
         },
         updatePhone() {
             this.phoneNumber.post(route("account.update.phone"), {
-                onSuccess: () => this.$swal(this.swalOptions),
+                onSuccess: () => this.$toast.add({ severity: 'success', summary: 'Phone number updated', life: 3000 }),
             });
         },
         checkLenght(event) {
@@ -157,20 +184,24 @@ export default {
         },
         updatePassword() {
             this.password.post(route("account.update.password"), {
-                onSuccess: () => this.$swal(this.swalOptions),
+                onSuccess: () => {
+                    this.$toast.add({ severity: 'success', summary: 'Password updated', life: 3000 });
+                    this.password.reset()
+                },
             });
         },
     },
     data() {
         return {
-            user: this.$page.props.auth.user,
             account: useForm({
-                name: null,
-                birthDate: null,
-                gender: null,
+                name: this.$page.props.auth.user.name,
+                birthDate: this.$page.props.auth.user.birth_date,
+                gender: this.$page.props.auth.user.gender,
+                iban:this.$page.props.auth.user.iban,
+                address:this.$page.props.auth.user.address
             }),
             email: useForm({
-                email: null,
+                email: this.$page.props.auth.user.email,
             }),
             password: useForm({
                 oldPassword: null,
@@ -178,7 +209,7 @@ export default {
                 newPassword_confirmation: null,
             }),
             phoneNumber: useForm({
-                phoneNumber: null,
+                phoneNumber: this.$page.props.auth.user.phone_number,
             }),
             selectedTab: 0,
             tabs: [
@@ -209,13 +240,6 @@ export default {
                 timerProgressBar: true,
             },
         };
-    },
-    mounted() {
-        this.account.name = this.user.name;
-        this.email.email = this.user.email;
-        this.account.birthDate = this.user.birth_date;
-        this.account.gender = this.user.gender;
-        this.phoneNumber.phoneNumber = this.user.phone_number;
     },
 };
 </script>

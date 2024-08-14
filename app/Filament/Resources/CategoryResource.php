@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
+use App\Helpers\CategoryHelper;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -37,10 +38,11 @@ class CategoryResource extends Resource
                         titleAttribute: "category",
                         modifyQueryUsing: fn(Builder $query) => $query->where("can_have_children", 1),
                     )
-                    ->getOptionLabelFromRecordUsing(fn(Model $category) => is_null($category->parent) ? "{$category->category}" : "{$category->parent->category}-{$category->category}"),
+                    ->getOptionLabelFromRecordUsing(fn(Model $category) =>  CategoryHelper::getCategoryChain($category->id)),
                 Toggle::make("can_have_children")
             ]);
     }
+
 
     public static function table(Table $table): Table
     {

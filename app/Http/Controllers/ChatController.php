@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chat;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -46,10 +47,14 @@ class ChatController extends Controller
 
     public function show(Request $request, string $chatID)
     {
-        $chat = Chat::with("messages:id,message,chat_id,user_id,created_at", "messages.user:id,name,email,phone_number", "deal")->findOrFail($chatID);
+        $chat = Chat::with("messages:id,message,chat_id,user_id,created_at", "messages.user:id,name,email,phone_number", "deal","users")->findOrFail($chatID);
+        $sender=$chat->users->filter(function (User $user) {
+            return $user->id!=auth()->user()->id;
+        })->first();
         return Inertia::render("Chat/Chat", [
             "messages" => $chat->messages,
-            "chat" => $chat->only(["deal", "id", "deal_id", "name", "users"])
+            "chat" => $chat->only(["deal", "id", "deal_id", "name", "users"]),
+            "sender"=>$sender
         ]);
     }
 }

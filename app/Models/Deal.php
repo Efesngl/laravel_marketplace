@@ -22,6 +22,12 @@ class Deal extends Model
             get: fn(string $value) => Storage::url($value),
         );
     }
+        protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn(int $value) => number_format($value,2,",","."),
+        );
+    }
 
     public function user(): BelongsTo
     {

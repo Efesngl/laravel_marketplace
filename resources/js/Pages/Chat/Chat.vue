@@ -1,6 +1,13 @@
 <template>
-    <AccountLayout title="Username" :backUrl="route('account.chats.index')">
+    <AccountLayout :title="sender.name" :backUrl="route('account.chats.index')">
         <div class="flex flex-col max-h-dvh h-[calc(100dvh-4rem)]">
+            <div id="chat-deal-detail" class="gap-2 flex flex-row justify-start p-1 items-center bg-zinc-950">
+                <Avatar :image="chat.deal.banner"></Avatar>
+                <Link :href="route('deal.show',{deal:chat.deal.id})" id="chat-deal-deatil" class="flex flex-col transition hover:text-yellow-400">
+                    <span class="text-xl">{{ chat.deal.title }}</span>
+                    <small>{{ chat.deal.price }} TL</small>
+                </Link>
+            </div>
             <div id="messages" class="flex flex-col basis-11/12 p-3 gap-1 overflow-y-scroll" ref="chatContainer">
                 <MessageBubble v-for="message in messages" :received="message.user.id != this.$page.props.auth.user.id" :message="message"></MessageBubble>
             </div>
@@ -14,22 +21,26 @@
 
 <script>
 import AccountLayout from "@/Layouts/AccountLayout.vue";
-import { useForm } from "@inertiajs/vue3";
+import { Link, useForm } from "@inertiajs/vue3";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 // import Sent from "@/Components/Message/Sent.vue";
 // import Received from "@/Components/Message/Received.vue";
 import MessageBubble from "@/Components/Message/MessageBubble.vue";
+import Avatar from "primevue/avatar";
 export default {
     props: {
         messages: Object,
         chat: Object,
+        sender:Object
     },
     components: {
         AccountLayout,
         InputText,
         Button,
         MessageBubble,
+        Avatar,
+        Link
     },
     mounted() {
         this.scrollBottom();

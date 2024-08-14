@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Iyzico;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrowseController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -62,4 +64,12 @@ Route::controller(SearchController::class)->group(function () {
 });
 Route::controller(BrowseController::class)->prefix("/categories")->group(function () {
     Route::get("/{cat?}", "index")->name("browse.index");
+});
+Route::get("/iyzico",function(){
+    $user=User::where("email","=","efe@gmail.com")->first();
+    $iyzico=new Iyzico();
+    dd($iyzico::createSubMerchant($user));
+});
+Route::get("/info",function(){
+    phpinfo();
 });

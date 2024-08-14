@@ -14,7 +14,7 @@
                     </div>
                 </div>
             </nav>
-            <div class="h-auto box-border pt-16 w-svw bg-stone-200 dark:bg-zinc-900">
+            <div class="h-auto box-border pt-14 w-svw bg-stone-200 dark:bg-zinc-900">
                 <slot></slot>
             </div>
         </div>

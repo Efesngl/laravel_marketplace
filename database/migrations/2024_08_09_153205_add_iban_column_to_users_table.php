@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deal_specification_pivot', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-
-            $table->unsignedBigInteger('specification_id');
-            $table->unsignedBigInteger('deal_id');
-            $table->unsignedBigInteger('value_id');
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->string("iban",26)->nullable();
+            $table->string("sub_merchant_key")->nullable()->unique();
+            $table->string("tc_no",11)->unique()->nullable()->default(null);
         });
     }
 
@@ -26,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('deal_spec_pivot');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };
