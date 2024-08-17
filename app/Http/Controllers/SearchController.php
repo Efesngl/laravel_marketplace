@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Deal;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,10 +16,12 @@ class SearchController extends Controller
 
     public function result(Request $request)
     {
-        $deals = Deal::where("title", "like", "%{$request->input("search")}%")->get();
+        $rows=$request->rows ?? 50;
+        $products = Product::where("title", "like", "%{$request->input("search")}%")->paginate($rows);
         return Inertia::render("Search/SearchResult", [
-            "deals" => $deals,
+            "products" => $products,
             "search" => $request->input("search"),
+            "rowAmount"=>$rows
         ]);
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string("category");
             $table->unsignedBigInteger("parent_id")->default(0);
             $table->boolean("can_have_children")->default(1);
-            $table->string("icon");
+            $table->string("icon")->nullable();
         });
     }
 

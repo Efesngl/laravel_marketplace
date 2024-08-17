@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Models\Deal;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -22,7 +22,7 @@ class Iyzico
         $request->setLocale(\Iyzipay\Model\Locale::TR);
         $request->setSubMerchantExternalId($user->id);
         $request->setSubMerchantType(\Iyzipay\Model\SubMerchantType::PERSONAL);
-        $request->setAddress($user->address);
+        $request->setAddress($user->sub_merchant_address);
         $request->setContactName(explode(" ", $user->name)[0]);
         $request->setContactSurname(explode(" ", $user->name)[1]);
         $request->setEmail($user->email);
@@ -52,14 +52,14 @@ class Iyzico
         # make request
         return \Iyzipay\Model\SubMerchant::update($request, $this->options);
     }
-    public function initCheckoutForm(Request $req,User $user,Deal $deal)
+    public function initCheckoutForm(Request $req,User $user,Product $product)
     {
 
         # create request class
         $request = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
         $request->setLocale(\Iyzipay\Model\Locale::TR);
-        $request->setPrice($deal->price);
-        $request->setPaidPrice($deal->price*1.20);
+        $request->setPrice($product->price);
+        $request->setPaidPrice($product->price*1.20);
         $request->setCurrency(\Iyzipay\Model\Currency::TL);
         $request->setBasketId("B67832");
         $request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
@@ -98,13 +98,13 @@ class Iyzico
 
         $basketItems = array();
         $firstBasketItem = new \Iyzipay\Model\BasketItem();
-        $firstBasketItem->setId($deal->id);
-        $firstBasketItem->setName($deal->title);
+        $firstBasketItem->setId($product->id);
+        $firstBasketItem->setName($product->title);
         $firstBasketItem->setCategory1("Collectibles");
         $firstBasketItem->setItemType(\Iyzipay\Model\BasketItemType::PHYSICAL);
-        $firstBasketItem->setPrice($deal->price);
+        $firstBasketItem->setPrice($product->price);
         $firstBasketItem->setSubMerchantKey("d6KWJhnIOOptfiMuZRjoQcyHLzA=");
-        $firstBasketItem->setSubMerchantPrice($deal->price);
+        $firstBasketItem->setSubMerchantPrice($product->price);
         $basketItems[0] = $firstBasketItem;
 
         $request->setBasketItems($basketItems);

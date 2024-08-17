@@ -16,7 +16,7 @@ class ChatController extends Controller
             ->user()
             ->chats()
             ->with([
-                "deal:title,id,banner",
+                "product:title,id,banner",
                 'users:id,name,email,phone_number',
                 "messages:created_at,message,id,user_id,chat_id"
             ])->get()->sortByDesc(function ($chat) {
@@ -34,11 +34,11 @@ class ChatController extends Controller
         $request->validate([
             "message" => ["required", "string"],
             'receiverID' => ["required", "exists:users,id"],
-            "dealId" => ["required", "exists:deals,id"]
+            "productID" => ["required", "exists:products,id"]
         ]);
         $chat = Chat::create([
             'name' => $request->user()->id . "_" . $request->receiverID,
-            "deal_id" => $request->dealId
+            "product_id" => $request->productID
         ]);
 
         $chat->users()->attach([$request->user()->id, $request->receiverID]);
@@ -47,13 +47,13 @@ class ChatController extends Controller
 
     public function show(Request $request, string $chatID)
     {
-        $chat = Chat::with("messages:id,message,chat_id,user_id,created_at", "messages.user:id,name,email,phone_number", "deal","users")->findOrFail($chatID);
+        $chat = Chat::with("messages:id,message,chat_id,user_id,created_at", "messages.user:id,name,email,phone_number", "product","users")->findOrFail($chatID);
         $sender=$chat->users->filter(function (User $user) {
             return $user->id!=auth()->user()->id;
         })->first();
         return Inertia::render("Chat/Chat", [
             "messages" => $chat->messages,
-            "chat" => $chat->only(["deal", "id", "deal_id", "name", "users"]),
+            "chat" => $chat->only(["product", "id", "product_id", "name", "users"]),
             "sender"=>$sender
         ]);
     }

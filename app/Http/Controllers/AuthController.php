@@ -66,7 +66,7 @@ class AuthController extends Controller
         $user->gender=$request->gender;
         $user->birth_date=$birthDate->toDateString();
         $user->tc_no=$request->tcno;
-        $user->address=$request->address;
+        $user->sub_merchant_address=$request->address;
         $user->iban=str_replace(" ","",$request->iban);
         if($user->save()){
             try{

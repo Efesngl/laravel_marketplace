@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chat;
-use App\Models\Message;
+use App\Models\ChatMessage;
 use Illuminate\Http\Request;
 use App\Events\MessageReceived;
 
@@ -11,7 +11,7 @@ class MessageController extends Controller
 {
     public function index($chatId)
     {
-        $messages = Message::with('user')->where('chat_id', $chatId)->get();
+        $messages = ChatMessage::with('user')->where('chat_id', $chatId)->get();
         return response()->json($messages);
     }
 
@@ -20,7 +20,7 @@ class MessageController extends Controller
         $request->validate([
             'text' => 'required|string',
         ]);
-        $message=Message::create([
+        $message=ChatMessage::create([
             'chat_id' => $chatId,
             'user_id' => $request->user()->id,
             'message' => $request->text,

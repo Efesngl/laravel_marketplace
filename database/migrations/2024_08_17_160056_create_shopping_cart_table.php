@@ -31,13 +31,15 @@ return new class extends Migration
             $table->softDeletes();
             $table->unsignedBigInteger("user_id");
             $table->decimal("total",14,2);
+            $table->string("address")->nullable();
         });
-        Schema::create("order_products",function(Blueprint $table){
+        Schema::create("order_product",function(Blueprint $table){
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger("order_id");
             $table->unsignedBigInteger("product_id")->nullable();
             $table->unsignedBigInteger("status_id")->nullable();
+            $table->unsignedBigInteger("quantity");
             $table->foreign("order_id")->references("id")->on("orders")->cascadeOnDelete();
             $table->foreign("product_id")->references("id")->on("products")->nullOnDelete();
             $table->foreign("status_id")->references("id")->on("order_statuses")->nullOnDelete();

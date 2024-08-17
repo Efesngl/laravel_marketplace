@@ -23,7 +23,7 @@
                     <div class="flex flex-col">
                         <div class="flex flex-row justify-start first:border-t items-center border-b" v-for="rs in recentSearches">
                             <button @click="visitRecentSearch(rs)" class="basis-11/12 p-2 text-start">{{ rs }}</button>
-                            <button class="basis-1/12 text-red-500" @click="removeRs(rs)"><fa-icon icon="fa-soild fa-trash"></fa-icon></button>
+                            <button class="basis-1/12 text-red-500" @click="removeRs(rs)"><i class="pi pi-trash"></i></button>
                         </div>
                     </div>
                 </div>

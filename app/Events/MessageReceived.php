@@ -3,7 +3,7 @@
 namespace App\Events;
 
 use App\Models\Chat;
-use App\Models\Message;
+use App\Models\ChatMessage;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -21,7 +21,7 @@ class MessageReceived implements ShouldBroadcastNow
     /**
      * Create a new event instance.
      */
-    public function __construct(Message $message,$chatID)
+    public function __construct(ChatMessage $message,$chatID)
     {
         //
         $this->message = $message;

@@ -29,6 +29,13 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            "phone_number" => fake()->phoneNumber(),
+            "birth_date"=>fake()->date("Y-m-d H:i:s"),
+            "gender" => fake()->numberBetween(0, 1),
+            "tc_no"=>fake()->numberBetween(10000000000, 99999999999),
+            "iban"=>fake()->iban("TR"),
+            "sub_merchant_address"=>fake()->address(),
+            "sub_merchant_id",
         ];
     }
 

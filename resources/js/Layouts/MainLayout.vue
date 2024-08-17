@@ -2,8 +2,8 @@
     <transition name="fade" appear>
         <div class="container">
             <nav id="navbar" class="fixed top-0 left-0 w-full bg-c-white text-c-black h-14 px-3 py-2 z-50 dark:bg-zinc-900 dark:text-white">
-                <div class="flex flex-row justify-around items-center">
-                    <div id="logo" class="basis-2/12">
+                <div class="flex flex-row justify-between md:justify-around items-center">
+                    <div id="logo" class="basis-1/12">
                         <Link :href="route('home')" class="text-3xl">Logo</Link>
                     </div>
                     <div id="search-bar" class="basis-4/12 hidden md:block">
@@ -12,10 +12,8 @@
                             <Button icon="pi pi-search" icon-pos="right" label="search" @click="search"></Button>
                         </InputGroup>
                     </div>
-                    <div class="justify-end hidden md:flex gap-3 flex-row">
-                        <Link class="text-yellow-400 flex flex-row justify-center items-center gap-1 hover:opacity-70 transition" :href="route('deal.create')"
-                            ><i class="pi pi-plus"></i>New Deal</Link
-                        >
+                    <div class="justify-end hidden md:flex gap-3 flex-row basis-1/12">
+                        <Button icon="pi pi-bell" text size="large"></Button>
                         <Link class="text-yellow-400 flex flex-row justify-center items-center gap-1 hover:opacity-70 transition" :href="route('home')">
                             <OverlayBadge value="2">
                                 <i class="pi pi-shopping-cart"></i>
@@ -58,7 +56,7 @@
                             </template>
                         </Menu>
                     </div>
-                    <span class="h-full md:hidden text-c-black"><fa-icon icon="fa-solid fa-bell" size="xl"></fa-icon></span>
+                    <Button icon="pi pi-bell" class="md:!hidden" text size="large"></Button>
                 </div>
             </nav>
             <!-- <Navbar></Navbar> -->
@@ -73,8 +71,6 @@
 </template>
 
 <script>
-// import Dock from "../Components/Dock.vue";
-// import Navbar from "../Components/Navbar.vue";
 
 import InputText from "primevue/inputtext";
 import BottomBar from "../Components/BottomBar.vue";
@@ -110,6 +106,11 @@ export default {
                     text: "Browse",
                     icon: "pi pi-bars",
                     route: "browse.index",
+                },
+                {
+                    text: "New product",
+                    icon: "pi pi-plus",
+                    route: "product.create",
                 },
             ],
             searchValue: useForm({

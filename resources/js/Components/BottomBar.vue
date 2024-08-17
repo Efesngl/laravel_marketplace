@@ -1,8 +1,8 @@
 <template>
-    <div id="bottom-bar" class="h-16 md:hidden z-50 flex flex-row justify-between px-3 text-c-white fixed bg-zinc-800 w-full bottom-0 left-0">
+    <div id="bottom-bar" class="h-16 md:hidden z-50 flex flex-row justify-between px-3 text-zinc-50 fixed bg-zinc-800 w-dvw bottom-0 left-0">
         <Link :href="route(ni.routeName)" v-for="ni in navItems" class="flex flex-col items-center justify-center" :class="{ 'text-yellow-400': route().current().includes(ni.routeName) }">
-            <div class="bottom-bar-box flex flex-col">
-                <fa-icon :icon="'fa-solid ' + ni.icon" size="lg"></fa-icon>
+            <div class="flex flex-col items-center justify-start">
+                <i :class="ni.icon"></i>
                 <span class="text-sm">{{ ni.text }}</span>
             </div>
         </Link>
@@ -20,27 +20,27 @@ export default {
             navItems: [
                 {
                     text: "Home Page",
-                    icon: "fa-house",
+                    icon: "pi pi-home",
                     routeName: "home",
                 },
                 {
                     text: "Browse",
-                    icon: "fa-list",
+                    icon: "pi pi-bars",
                     routeName: "browse.index",
                 },
                 {
-                    text: "New Deal",
-                    icon: "fa-circle-plus",
-                    routeName: "deal.create",
+                    text: "New Product",
+                    icon: "pi pi-plus-circle",
+                    routeName: "product.create",
                 },
                 {
                     text: "Search",
-                    icon: "fa-magnifying-glass",
+                    icon: "pi pi-search",
                     routeName: "search",
                 },
                 {
                     text: this.$page.props.auth.user != null ? "Account" : "Login",
-                    icon: "fa-user",
+                    icon: "pi pi-user",
                     routeName: this.$page.props.auth.user != null ? "account.index" : "login",
                 },
             ],

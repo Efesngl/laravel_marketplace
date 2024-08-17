@@ -22,13 +22,13 @@ class User extends Authenticatable
         "id",
         'name',
         'email',
-        'password',
         "phone_number",
         "gender",
         "birth_date",
         "iban",
-        "sub_merchant_key",
-        "tc_no"
+        "sub_merchant_id",
+        "tc_no",
+        "sub_merchant_address"
     ];
 
     /**
@@ -54,14 +54,16 @@ class User extends Authenticatable
             "birth_date"=>"date:Y-m-d"
         ];
     }
-
-    public function deals(): HasMany
+    public function adresses():HasMany{
+        return $this->hasMany(UserAddress::class);
+    }
+    public function products(): HasMany
     {
-        return $this->hasMany(Deal::class);
+        return $this->hasMany(Product::class);
     }
     public function messages()
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(ChatMessage::class);
     }
 
     public function chats():BelongsToMany
@@ -70,5 +72,8 @@ class User extends Authenticatable
     }
     public function favorites():HasMany{
         return $this->hasMany(Favorite::class);
+    }
+    public function orders():HasMany{
+        return $this->hasMany(Order::class);
     }
 }

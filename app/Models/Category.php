@@ -18,9 +18,9 @@ class Category extends Model
         "parent_id",
         "can_have_children"
     ];
-    public function deals(): HasMany
+    public function products(): HasMany
     {
-        return $this->hasMany(Deal::class);
+        return $this->hasMany(Product::class);
     }
     public function children(): HasMany
     {

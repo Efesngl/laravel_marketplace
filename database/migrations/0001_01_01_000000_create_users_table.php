@@ -15,13 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string("phone_number",11);
             $table->boolean("gender")->nullable();
             $table->date("birth_date");
+            $table->string("tc_no",11)->unique();
             $table->string("iban",26)->unique();
             $table->string("sub_merchant_id");
+            $table->string("sub_merchant_address");
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

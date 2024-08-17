@@ -14,7 +14,7 @@ class FavoriteController extends Controller
     public function index()
     {
         //
-        $favorites=Favorite::with("deal")->where("user_id", auth()->user()->id)->get();
+        $favorites=Favorite::with("product")->where("user_id", auth()->user()->id)->get();
         return Inertia::render("Account/Favorites", [
             "favorites"=>$favorites
         ]);
@@ -27,26 +27,29 @@ class FavoriteController extends Controller
     {
         //
         $request->validate([
-            "dealID"=>["required","exists:deals,id"],
+            "productID"=>["required","exists:products,id"],
         ]);
         $favorite=new Favorite;
         $favorite->user_id=$request->user()->id;
-        $favorite->deal_id=$request->dealID;
+        $favorite->product_id=$request->productID;
         if(!$favorite->save()){
             return response(500);
         }
-        return $favorite->only("id","deal_id","user_id");
+        return $favorite->only("id","product_id","user_id");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
         //
-        if(!Favorite::destroy($id)){
-            return response(500);
+        $request->validate([
+            "productID"=>["required","exists:products,id"],
+        ]);
+        if(!Favorite::where("product_id",$request->productID)->where("user_id",$request->user()->id)->delete()){
+            return response("",500);
         }
-        return response(200);
+        return response("",200);
     }
 }

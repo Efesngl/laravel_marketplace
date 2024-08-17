@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Deal;
+use App\Models\Product;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
@@ -18,14 +18,14 @@ class AccountController extends Controller
     {
         return Inertia::render("Account/AccountDetails");
     }
-    public function deals(Request $request, string $status)
+    public function products(Request $request, string $status)
     {
         if ($status != "active" && $status != "inactive") {
             abort(404);
         }
-        $deals = User::find($request->user()->id)->deals()->where("is_active", "=", ($status == "active") ? true : false)->get();
-        return Inertia::render("Account/MyDeals", [
-            "deals" => $deals
+        $products = auth()->user()->products()->where("is_active", "=", ($status == "active") ? true : false)->get();
+        return Inertia::render("Account/Products", [
+            "products" => $products
         ]);
     }
     public function updateProfile(Request $request)

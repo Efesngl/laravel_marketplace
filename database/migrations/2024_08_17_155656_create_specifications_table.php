@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string("value");
             $table->foreign("specification_id")->references("id")->on("specifications")->cascadeOnDelete();
         });
-        Schema::create("category_specifications",function(Blueprint $table){
+        Schema::create("category_specification",function(Blueprint $table){
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger("category_id");
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->foreign("category_id")->references("id")->on("categories")->cascadeOnDelete();
             $table->foreign("specification_id")->references("id")->on("specifications")->cascadeOnDelete();
         });
-        Schema::create("product_specifications",function(Blueprint $table){
+        Schema::create("product_specification",function(Blueprint $table){
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger("product_id");

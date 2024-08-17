@@ -14,7 +14,7 @@ class BrowseController extends Controller
         if ($parent != 0) {
             $category = Category::with("children")->findOrFail($parent);
             if(count($category->children)==0){
-                return redirect(route("deal.index",["cat"=>$category->id]));
+                return redirect(route("product.index",["cat"=>$category->id]));
             }
         }
         $categories = Category::with("children")->where("parent_id", $parent)->get();
@@ -22,6 +22,6 @@ class BrowseController extends Controller
         if ($parent != 0) {
             $parent_category = Category::where("id", $parent)->first();
         }
-        return Inertia::render("Deal/Browse", ["categories" => $categories, "parentCategory" => $parent_category]);
+        return Inertia::render("Product/Browse", ["categories" => $categories, "parentCategory" => $parent_category]);
     }
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger("product_id");
             $table->foreign("product_id")->references("id")->on("products")->cascadeOnDelete();
         });
-        Schema::create("chat_users",function(Blueprint $table){
+        Schema::create("chat_user",function(Blueprint $table){
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger("user_id");
