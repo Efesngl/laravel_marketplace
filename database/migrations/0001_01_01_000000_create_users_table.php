@@ -17,10 +17,22 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string("phone_number",11);
+            $table->boolean("gender")->nullable();
+            $table->date("birth_date");
+            $table->string("iban",26)->unique();
+            $table->string("sub_merchant_id");
             $table->rememberToken();
             $table->timestamps();
         });
-
+        Schema::create("user_addresses",function(Blueprint $table){
+            $table->id();
+            $table->timestamps();
+            $table->unsignedBigInteger("user_id");
+            $table->string("address");
+            $table->boolean("address type")->default(0);
+            $table->foreign("user_id")->references("id")->on("users")->cascadeOnDelete();
+        });
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
