@@ -6,14 +6,16 @@
                 <form @submit.prevent="search()" class="flex flex-col">
                     <label for="search">Search</label>
                     <div class="flex flex-row gap-0">
-                        <input
-                            type="text"
-                            class="basis-3/4 border-yellow-400 dark:border-zinc-800 text-black rounded-tl rounded-bl focus:ring-0 focus:border-yellow-400"
-                            name="search"
-                            id="search"
-                            v-model="s.search"
-                        />
-                        <button type="submit" class="basis-1/4 bg-yellow-400 text-white dark:bg-zinc-800 rounded-tr rounded-br">Search</button>
+                        <InputGroup>
+                            <InputText
+                                type="text"
+                                class="basis-3/4 border-yellow-400 dark:border-zinc-800 text-black rounded-tl rounded-bl focus:ring-0 focus:border-yellow-400"
+                                name="search"
+                                id="search"
+                                v-model="s.search"
+                            />
+                            <Button type="submit" class="basis-1/4 bg-yellow-400">Search</Button></InputGroup
+                        >
                     </div>
                 </form>
                 <div>
@@ -31,12 +33,18 @@
 </template>
 
 <script>
+import InputText from "primevue/inputtext";
 import MainLayout from "../../Layouts/MainLayout.vue";
 import { useForm, Link, router } from "@inertiajs/vue3";
+import Button from "primevue/button";
+import InputGroup from "primevue/inputgroup";
 export default {
     components: {
         MainLayout,
         Link,
+        InputText,
+        Button,
+        InputGroup,
     },
     data() {
         return {

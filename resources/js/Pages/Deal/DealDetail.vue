@@ -9,34 +9,69 @@
 </style>
 <template>
     <AccountLayout title="deal" :backUrl="route('home')">
-        <template v-slot:navButton>
-            <Button @click="addToFav" icon="pi pi-star" text v-if="deal.favorites.length == 0"></Button>
+        <template v-slot:navButton v-if="$page.props.auth.user">
+            <Button @click="addToFav" icon="pi pi-star" text v-if="deal.favorites_count == 0"></Button>
             <Button @click="removeFromFav" icon="pi pi-star-fill" class="text-yellow-400" text v-else></Button>
         </template>
-        <div class="min-h-svh h-auto flex flex-col gap-1">
-            <h2 class="text-center text-2xl">{{ deal.title }}</h2>
-            <div>
-                <Galleria :value="deal.images" :numVisible="3" containerStyle="w-full" :showItemNavigators="true">
-                    <template #item="slotProps">
-                        <img :src="slotProps.item.image" alt="image" style="width: 100%" />
-                    </template>
-                    <template #thumbnail="slotProps">
-                        <img :src="slotProps.item.image" alt="image" />
-                    </template>
-                </Galleria>
-            </div>
-
-            <div id="owner-detail" class="flex flex-col border-b">
-                <div id="owner" class="text-center">
-                    <a href="/" class="text-blue-500">{{ deal.user.name }}</a>
+        <div class="min-h-svh h-auto flex flex-col gap-1 md:px-16">
+            <h2 class="text-center text-2xl border-b border-b-zinc-500 border-opacity-70 p-2">{{ deal.title }}</h2>
+            <!-- main content -->
+            <div class="flex flex-row gap-5 justify-between">
+                <div class="md:basis-6/12 basis-12/12">
+                    <Galleria :value="deal.images" :numVisible="3" containerClass="w-full" :showItemNavigators="true">
+                        <template #item="slotProps">
+                            <img :src="slotProps.item.image" alt="image" class="w-full md:h-[34rem]" />
+                        </template>
+                        <template #thumbnail="slotProps">
+                            <img :src="slotProps.item.image" alt="image" class="md:h-24" />
+                        </template>
+                    </Galleria>
                 </div>
-                <div id="address" class="text-center">
-                    <a class="text-blue-500">{{ deal.city.name }}</a
-                    ><small>/</small><a class="text-blue-500">{{ deal.district.name }}</a
-                    ><small>/</small><a class="text-blue-500">{{ deal.neighbourhood.name }}</a>
+                <div id="owner-detail" class="md:flex hidden flex-col border-none basis-3/12">
+                    <div id="owner" class="text-center">
+                        <h5 class="text-lg">Owner Detail</h5>
+                        <a href="/" class="text-blue-500 capitalize">{{ deal.user.name }}</a>
+                    </div>
+                    <div id="address" class="text-center">
+                        <a class="text-blue-500">{{ deal.city.name }}</a
+                        ><small>/</small><a class="text-blue-500">{{ deal.district.name }}</a
+                        ><small>/</small><a class="text-blue-500">{{ deal.neighbourhood.name }}</a>
+                    </div>
+                    <div class="w-full flex flex-row justify-between gap-1 sticky bottom-0 left-0 bg-zinc-900 p-3" v-if="$page.props.auth.user">
+                        <a :href="route('home')" class="bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex flex-col justify-center items-center hover:opacity-50 transition">
+                            <span>Buy</span>
+                            <small class="text-sm">{{ deal.price }} TL</small>
+                        </a>
+                        <button
+                            v-if="chat == null"
+                            @click="
+                                () => {
+                                    this.sendMessageDialogVisible = true;
+                                }
+                            "
+                            class="bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex items-center justify-center hover:opacity-50 transition"
+                        >
+                            <span>Send message</span>
+                        </button>
+                        <Link
+                            v-else
+                            :href="route('account.chats.show', { chatID: chat.id })"
+                            class="text-center bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex items-center justify-center hover:opacity-50 transition"
+                            >Go to chat</Link
+                        >
+                    </div>
+                    <div class="w-full flex flex-row justify-center gap-1 sticky bottom-0 left-0 bg-zinc-900 p-3" v-else>
+                        <Link
+                            :href="route('login')"
+                            class="bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex flex-col justify-center items-center hover:opacity-50 transition"
+                        >
+                            <span>Please login</span>
+                        </Link>
+                    </div>
                 </div>
             </div>
-            <div>
+            <!-- tab list -->
+            <div class="w-full">
                 <Tabs value="0">
                     <TabList class="!justify-center w-full">
                         <Tab value="0">Description</Tab>
@@ -64,7 +99,8 @@
                 </Tabs>
             </div>
         </div>
-        <div class="w-full flex flex-row justify-between gap-1 sticky bottom-0 left-0 bg-zinc-900 p-3">
+        <!-- bottom bar -->
+        <div class="w-full md:hidden flex flex-row justify-between gap-1 sticky bottom-0 left-0 bg-zinc-900 p-3" v-if="$page.props.auth.user">
             <a :href="route('home')" class="bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex flex-col justify-center items-center hover:opacity-50 transition">
                 <span>Buy</span>
                 <small class="text-sm">{{ deal.price }} TL</small>
@@ -80,7 +116,17 @@
             >
                 <span>Send message</span>
             </button>
-            <Link v-else :href="route('account.chats.show', { chatID: chat.id })" class="text-center bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex items-center justify-center hover:opacity-50 transition">Go to chat</Link>
+            <Link
+                v-else
+                :href="route('account.chats.show', { chatID: chat.id })"
+                class="text-center bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex items-center justify-center hover:opacity-50 transition"
+                >Go to chat</Link
+            >
+        </div>
+        <div class="w-full flex flex-row justify-center gap-1 sticky bottom-0 left-0 bg-zinc-900 p-3" v-else>
+            <Link :href="route('login')" class="bg-yellow-400 p-3 basis-1/2 text-zinc-950 rounded flex flex-col justify-center items-center hover:opacity-50 transition">
+                <span>Please login</span>
+            </Link>
         </div>
     </AccountLayout>
     <Dialog contentClass="w-80 flex flex-col items-center gap-2" v-model:visible="sendMessageDialogVisible" modal :draggable="false">

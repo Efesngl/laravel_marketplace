@@ -3,8 +3,7 @@
         <title>Register</title>
     </Head>
     <AccountLayout title="Register" :backUrl="route('home')">
-        <div class="flex flex-col justify-start h-content pt-5">
-            <h3 class="text-3xl text-center">Register</h3>
+        <div class="flex justify-center">
             <form class="flex flex-col p-5 gap-4" @submit.prevent="form.post(route('register'))">
                 <div id="register-name">
                     <label for="email">Your name</label>
@@ -68,15 +67,15 @@
                     <div class="flex flex-row gap-2">
                         <div class="flex flex-row items-center gap-1">
                             <RadioButton name="gender" value="0" id="gender_male" v-model="form.gender" />
-                            <label for="gender_male">Erkek</label>
+                            <label for="gender_male">Male</label>
                         </div>
                         <div class="flex flex-row items-center gap-1">
                             <RadioButton name="gender" value="1" id="gender_female" v-model="form.gender" />
-                            <label for="gender_female">Kadın</label>
+                            <label for="gender_female">Female</label>
                         </div>
                     </div>
                 </div>
-                <Button type="submit">Kayıt ol</Button>
+                <Button type="submit">Register</Button>
                 <Link :href="route('login')" class="text-center text-zinc-50">Already have an account ? Sign in now !</Link>
             </form>
         </div>

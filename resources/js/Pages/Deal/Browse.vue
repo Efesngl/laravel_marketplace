@@ -4,7 +4,7 @@
             <h2 class="text-2xl">
                 <span v-if="parentCategory != null">{{ parentCategory.category }}</span> Categories
             </h2>
-            <div id="categories-list" class="flex flex-col gap-2 items-start w-full p-2">
+            <div id="categories-list" class="flex flex-col gap-2 items-start w-full md:w-1/2 p-2">
                 <a :href="route('deal.index', { cat: parentCategory != null ? parentCategory.id : 0 })" class="border p-2 text-lg w-full flex justify-between items-center rounded-lg border-yellow-400">
                     <span
                         >All <span v-if="parentCategory != null">{{ parentCategory.category }}</span> Deals</span

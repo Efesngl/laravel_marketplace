@@ -9,7 +9,7 @@
     }
 </style>
 <template>
-    <Link :href="link">
+    <Link :href="link" class="w-48">
         <Card class="overflow-hidden bg-zinc-950">
             <template #header>
                 <img :src="deal.banner" alt="" class="w-full max-h-36 h-36 contain-content" />

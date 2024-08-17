@@ -1,7 +1,7 @@
 <template>
     <transition name="fade" appear>
         <div class="container">
-            <nav id="navbar" class="fixed top-0 left-0 w-full bg-white dark:bg-zinc-900 text-black dark:text-white h-14 px-3 py-2 border-b border-yellow-400">
+            <nav id="navbar" class="fixed z-50 top-0 left-0 w-full bg-white dark:bg-zinc-900 text-black dark:text-white h-14 px-3 py-2 border-b border-yellow-400">
                 <div class="flex flex-row justify-start items-center h-full">
                     <div id="back" class="basis-1/6" v-if="backUrl">
                         <Link :href="backUrl"><fa-icon icon="fa-solid fa-arrow-left"></fa-icon></Link>

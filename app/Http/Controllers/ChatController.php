@@ -16,7 +16,7 @@ class ChatController extends Controller
             ->user()
             ->chats()
             ->with([
-                "deal:title,id",
+                "deal:title,id,banner",
                 'users:id,name,email,phone_number',
                 "messages:created_at,message,id,user_id,chat_id"
             ])->get()->sortByDesc(function ($chat) {

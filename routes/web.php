@@ -68,7 +68,7 @@ Route::controller(BrowseController::class)->prefix("/categories")->group(functio
 Route::get("/iyzico",function(){
     $user=User::where("email","=","efe@gmail.com")->first();
     $iyzico=new Iyzico();
-    dd($iyzico::createSubMerchant($user));
+    dd($iyzico->initCheckoutForm());
 });
 Route::get("/info",function(){
     phpinfo();

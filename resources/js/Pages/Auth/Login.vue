@@ -1,7 +1,6 @@
 <template>
     <AccountLayout title="Login" :backUrl="route('home')">
-        <div class="flex flex-col justify-start h-content-bboff">
-            <h3 class="text-3xl text-center">Login</h3>
+        <div class="flex justify-center h-[calc(100dvh-3.5rem)]">
             <form class="flex flex-col p-5 gap-4" @submit.prevent="form.post(route('login'))">
                 <div id="login-email">
                     <label for="email">Email</label>
@@ -22,6 +21,7 @@
                         name="password"
                         v-model="form.password"
                     />
+                    <Link :href="route('home')">Forgot your password ?</Link>
                 </div>
                 <div v-if="$page.props.errors.credentials">
                     <span class="text-red-600">{{ $page.props.errors.credentials }}</span>

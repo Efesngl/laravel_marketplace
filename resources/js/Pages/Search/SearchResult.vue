@@ -1,6 +1,6 @@
 <template>
     <MainLayout>
-        <div>
+        <div class="md:px-16 p-3">
             <h2 class="text-3xl text-center">Deals about {{ search }}</h2>
             <div class="grid gap-1 grid-cols-2 p-3 md:grid-cols-5">
                 <DealCard :deal="deal" v-for="deal in deals"></DealCard>

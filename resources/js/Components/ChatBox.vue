@@ -1,6 +1,6 @@
 <template>
     <Link :href="route('account.chats.show', { chatID: chat.id })" class="flex flex-row w-full gap-1 mb-1 transition-all border rounded border-zinc-900 hover:border-yellow-400">
-        <Avatar label="L" class="basis-2/12" size="xlarge"></Avatar>
+        <Avatar :image="chat.deal.banner" class="basis-2/12" size="xlarge"></Avatar>
         <div class="flex flex-col w-full basis-10/12 px-2">
             <div class="flex flex-row justify-between">
                 <h5>{{ chat.users[0].name }}</h5>

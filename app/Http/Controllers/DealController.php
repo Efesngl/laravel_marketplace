@@ -18,19 +18,22 @@ class DealController extends Controller
      */
     public function index(Request $request)
     {
+        $rows=$request->rows ?? 50;
         $cat_id = $request->input("cat");
-        $category = "All";
-        $deals = Deal::all();
+        $category=null;
+        $deals = Deal::paginate($rows);
         if ($cat_id != 0) {
             $category = Category::findOrFail($cat_id);
             $deals = Deal::where("category_id", $category->id)->get();
             if ($category->can_have_children == 1) {
-                $deals = Deal::whereRelation("category.parent", "parent_id", "=", $cat_id)->orWhereRelation("category", "parent_id", "=", $cat_id)->get();
+                $deals = Deal::whereRelation("category.parent", "parent_id", "=", $cat_id)->orWhereRelation("category", "parent_id", "=", $cat_id)->paginate($rows);
             }
         }
         return Inertia::render("Deal/Index", [
-            "category" => $category,
-            "deals" => $deals
+            "category" => (is_null($category))?'All':$category->category,
+            "deals" => $deals,
+            "catID"=>intval($cat_id),
+            "rowAmount"=>intval($rows)
         ]);
     }
 
@@ -136,17 +139,25 @@ class DealController extends Controller
             "specifications.specification:id,specification",
             "specifications.value:id,value",
             "images:deal_id,image,id",
-            "favorites"=>function(Builder $builder){
-                $builder->where("user_id","=", auth()->user()->id)->select("id","deal_id","user_id");
-            }
         ])->findOrFail($id);
-        $user_chat=Chat::where("deal_id",$id)->whereRelation("users","user_id",auth()->user()->id)->select("id","deal_id","name")->first();
+        $deal->favorites_count=null;
+        if (!is_null(auth()->user())) {
+            $deal->loadCount([
+                "favorites" => function (\Illuminate\Database\Eloquent\Builder $builder) {
+                    $builder->where("user_id", auth()->user()->id);
+                }
+            ]);
+        }
+        $user_chat = null;
+        if(!is_null(auth()->user())){
+            $user_chat=Chat::where("deal_id", $id)->whereRelation("users", "user_id", auth()->user()->id)->select("id")->first();
+        }
         if ($deal->is_active == false) {
             abort(404);
         }
         return Inertia::render("Deal/DealDetail", [
             "deal" => $deal,
-            "chat"=>$user_chat
+            "chat" => $user_chat
         ]);
     }
 
@@ -164,7 +175,6 @@ class DealController extends Controller
             "images",
             "specifications",
         ])->findOrFail($id);
-
         $categories = Category::with("children:category,parent_id,id,can_have_children", "specifications")->where("parent_id", 0)->select("category", "parent_id", "id", "can_have_children")->get();
         $tree = $this->category_tree($categories, $deal->category_id);
         $locations = City::with("districts:name,id,city_id", "districts.neighbourhoods:name,id,district_id")->select("name", "id")->get();
@@ -190,7 +200,8 @@ class DealController extends Controller
             "district" => ["required", "integer"],
             "nh" => ["required", "integer"],
             "specifications" => ["required", "array"],
-            "isActive" => ["required", "boolean"]
+            "isActive" => ["required", "boolean"],
+            "isSelled"=>["required","boolean"]
         ]);
         $deal = Deal::with("images", "specifications")->findOrFail($id);
         $deal->title = $validated["title"];
@@ -201,6 +212,7 @@ class DealController extends Controller
         $deal->neighbourhood_id = $validated["nh"];
         $deal->category_id = $validated["category"];
         $deal->is_active = $validated["isActive"];
+        $deal->is_selled = $validated["isSelled"];
         if ($request->hasFile("banner")) {
             $deal->banner = str_replace("public/", "", $request->file("banner")->store("public/images/banners"));
         }
@@ -228,5 +240,7 @@ class DealController extends Controller
     public function destroy(string $id)
     {
         //
+        Deal::destroy($id);
+        return to_route("account.index");
     }
 }

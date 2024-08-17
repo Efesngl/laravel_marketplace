@@ -2,10 +2,13 @@
 .p-tab {
     background-color: #18181b !important;
 }
+.p-tablist-tab-list{
+    justify-content: center;
+}
 </style>
 <template>
     <AccountLayout title="Account Details" :backUrl="route('account.index')">
-        <div class="h-auto">
+        <div class="h-[calc(100dvh-3.5rem)]">
             <Tabs value="0" scrollable>
                 <TabList>
                     <Tab value="0">Profile</Tab>
@@ -15,9 +18,9 @@
                 </TabList>
                 <TabPanels>
                     <TabPanel value="0">
-                        <div class="pt-3">
+                        <div class="pt-3 flex flex-col md:items-center">
                             <h2 class="text-center text-3xl">Profile Information</h2>
-                            <form @submit.prevent="updateProfile">
+                            <form class="md:w-1/2" @submit.prevent="updateProfile">
                                 <div class="flex flex-col gap-4 p-2">
                                     <div class="flex flex-col" id="account-detail-name">
                                         <label for="name">Name</label>
@@ -58,9 +61,9 @@
                         </div>
                     </TabPanel>
                     <TabPanel value="1">
-                        <div class="pt-3">
+                        <div class="pt-3 flex flex-col md:items-center">
                             <h2 class="text-center text-3xl">Change email</h2>
-                            <form action="" @submit.prevent="updateEmail">
+                            <form class="md:w-1/2" action="" @submit.prevent="updateEmail">
                                 <div class="flex flex-col gap-4 p-2" id="account-detail-email">
                                     <div class="flex flex-col">
                                         <label for="email">Email</label>
@@ -75,9 +78,9 @@
                         </div>
                     </TabPanel>
                     <TabPanel value="2">
-                        <div class="pt-3">
+                        <div class="pt-3 flex flex-col md:items-center">
                             <h2 class="text-center text-3xl">Change Phone Number</h2>
-                            <form action="" @submit.prevent="updatePhone">
+                            <form class="md:w-1/2" action="" @submit.prevent="updatePhone">
                                 <div class="flex flex-col gap-4 p-2" id="account-detail-phone">
                                     <div class="flex flex-col">
                                         <label for="phoneNumber">Phone number</label>
@@ -93,9 +96,9 @@
                         </div>
                     </TabPanel>
                     <TabPanel value="3">
-                        <div class="pt-3">
+                        <div class="pt-3 flex flex-col md:items-center">
                             <h2 class="text-center text-3xl">Change password</h2>
-                            <form @submit.prevent="updatePassword">
+                            <form class="md:w-1/2" @submit.prevent="updatePassword">
                                 <div class="flex flex-col gap-4 p-2" id="account-detail-password">
                                     <div class="flex flex-col">
                                         <label for="name">Old Password</label>

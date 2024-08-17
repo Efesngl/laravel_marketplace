@@ -14,18 +14,23 @@ use Illuminate\Support\Facades\Storage;
 class Deal extends Model
 {
     use HasFactory;
-    protected $fillable = ["title", "price", "description", "user_id", "is_active", "category_id", "banner"];
+    protected $fillable = ["title", "price", "description", "user_id", "is_active", "category_id", "banner","is_selled"];
 
+    public function casts(){
+        return [
+            "is_selled"=>"boolean"
+        ];
+    }
     protected function banner(): Attribute
     {
         return Attribute::make(
             get: fn(string $value) => Storage::url($value),
         );
     }
-        protected function price(): Attribute
+    protected function price(): Attribute
     {
         return Attribute::make(
-            get: fn(int $value) => number_format($value,2,",","."),
+            get: fn(int $value) => number_format($value, 2,",","."),
         );
     }
 
@@ -63,7 +68,8 @@ class Deal extends Model
     {
         return $this->hasMany(Chat::class);
     }
-    public function favorites():HasMany{
+    public function favorites(): HasMany
+    {
         return $this->hasMany(Favorite::class);
     }
 }

@@ -59,10 +59,21 @@
                                         <Select @change="setLocation($event, 2)" v-model="selectedNH" :options="selectedDistrict.neighbourhoods" option-label="name"></Select>
                                         <Message severity="error" class="mt-1" v-if="deal.errors.nh">{{ deal.errors.nh }}</Message>
                                     </div>
-                                    <div class="w-full flex flex-row gap-1"><ToggleSwitch v-model="deal.isActive" :trueValue="1" :falseValue="0"></ToggleSwitch> <span>Is deal active</span></div>
+                                    <div class="w-full flex flex-row gap-1">
+                                        <ToggleSwitch v-model="deal.isActive" :trueValue="1" :falseValue="0"></ToggleSwitch> <span>Is deal active</span>
+                                    </div>
+                                    <div class="w-full flex flex-row gap-1">
+                                        <ToggleSwitch v-model="deal.isSelled" :trueValue="1" :falseValue="0"></ToggleSwitch> <span>Is deal selled</span>
+                                    </div>
                                 </div>
-                                <div class="w-full">
-                                    <button class="w-full bg-emerald-400 text-white p-2 rounded" @click="update()">Save</button>
+                                <div class="w-full flex flex-col gap-1 md:flex-row">
+                                    <Button class="basis-1/2 !border-none !outline-none !text-zinc-50 !bg-emerald-400 text-white p-2 rounded" @click="update()" label="Update" />
+                                    <Button
+                                        icon="pi pi-trash"
+                                        class="!w-full basis-1/2 !border-none !outline-none !text-zinc-50 !bg-red-600 text-white p-2 rounded"
+                                        @click="deleteDeal"
+                                        label="Delete Deal"
+                                    />
                                 </div>
                             </div>
                         </TabPanel>
@@ -210,6 +221,7 @@
             </div>
         </div>
         <Toast class="!w-80" />
+        <ConfirmDialog :draggable="false"></ConfirmDialog>
     </AccountLayout>
 </template>
 
@@ -234,6 +246,7 @@ import TabPanels from "primevue/tabpanels";
 import TabPanel from "primevue/tabpanel";
 import ToggleSwitch from "primevue/toggleswitch";
 import Toast from "primevue/toast";
+import ConfirmDialog from "primevue/confirmdialog";
 export default {
     props: {
         categories: Object,
@@ -258,7 +271,8 @@ export default {
         Message,
         Image,
         Toast,
-        AccountLayout
+        AccountLayout,
+        ConfirmDialog,
     },
     data() {
         return {
@@ -285,6 +299,7 @@ export default {
             banner: null,
             specifications: {},
             isActive: this.dealProp.is_active,
+            isSelled: this.dealProp.isSelled,
             _method: "PATCH",
         });
         this.setCategory(this.categories);
@@ -292,13 +307,33 @@ export default {
         this.setSpecs();
     },
     methods: {
+        deleteDeal() {
+            this.$confirm.require({
+                message: "This proccess can't be undone!",
+                header: "Warning!",
+                icon: "pi pi-info-circle",
+                
+                rejectProps: {
+                    label: "Cancel",
+                    severity: "secondary",
+                    outlined: true,
+                },
+                acceptProps: {
+                    label: "Delete",
+                    severity: "danger",
+                },
+                accept: () => {
+                    router.delete(route("deal.destroy", { deal: this.dealProp.id }));
+                },
+            });
+        },
         update() {
             if (this.checkErrors()) {
                 this.deal.post(route("deal.update", { deal: this.dealProp.id }), {
                     onSuccess: () => {
                         this.deal.images = [];
                         this.deal.banner = null;
-                        this.$toast.add({ severity: "success", summary: "Deal updated",life:3000 });
+                        this.$toast.add({ severity: "success", summary: "Deal updated", life: 3000 });
                     },
                 });
             } else {

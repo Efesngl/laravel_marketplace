@@ -2,8 +2,8 @@
     <MainLayout>
         <div class="flex flex-col items-center">
             <h2 class="text-3xl">Create deal</h2>
-            <div class="w-dvw">
-                <Stepper value="1" linear @update:value="stepper" ref="stepper">
+            <div class="w-dvw md:flex md:flex-col md:items-center">
+                <Stepper value="1" @update:value="stepper" ref="stepper">
                     <StepList class="">
                         <Step value="1">Deal information</Step>
                         <Step value="2">Images</Step>
@@ -11,8 +11,8 @@
                         <Step value="4">Specifications</Step>
                     </StepList>
                     <StepPanels>
-                        <StepPanel v-slot="{ activateCallback }" value="1">
-                            <div class="flex flex-col items-center gap-2 w-full p-3">
+                        <StepPanel v-slot="{ activateCallback }" class="rounded-md" value="1">
+                            <div class="flex flex-col gap-2 w-full p-3">
                                 <div class="flex flex-col w-full">
                                     <label for="title">Title</label>
                                     <input
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </StepPanel>
-                        <StepPanel v-slot="{ activateCallback }" value="2">
+                        <StepPanel class="rounded-md"  v-slot="{ activateCallback }" value="2">
                             <div class="flex flex-col items-center gap-2 w-full p-3">
                                 <div class="w-full px-2">
                                     <h5>Deal images</h5>
@@ -119,7 +119,7 @@
                                 </div>
                             </div>
                         </StepPanel>
-                        <StepPanel v-slot="{ activateCallback }" value="3">
+                        <StepPanel class="rounded-md"  v-slot="{ activateCallback }" value="3">
                             <div class="flex flex-col items-center gap-2 w-full p-3">
                                 <div class="flex flex-col w-full">
                                     <h5>Description</h5>
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                         </StepPanel>
-                        <StepPanel v-slot="{ activateCallback }" value="4">
+                        <StepPanel class="rounded-md" v-slot="{ activateCallback }" value="4">
                             <div class="flex flex-col items-center gap-2 w-full p-3">
                                 <div class="flex flex-col w-full">
                                     <h2>Specs</h2>
