@@ -4,6 +4,7 @@ use App\Helpers\Iyzico;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrowseController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProductController;
@@ -65,6 +66,7 @@ Route::controller(SearchController::class)->group(function () {
 Route::controller(BrowseController::class)->prefix("/categories")->group(function () {
     Route::get("/{cat?}", "index")->name("browse.index");
 });
+Route::resource("/cart", CartController::class);
 Route::get("/iyzico", function () {
     $user = User::where("email", "=", "efe@gmail.com")->first();
     $iyzico = new Iyzico();

@@ -3,7 +3,7 @@
         <div class="container">
             <nav id="navbar" class="fixed top-0 left-0 w-full bg-c-white text-c-black h-14 px-3 py-2 z-50 dark:bg-zinc-900 dark:text-white">
                 <div class="flex flex-row justify-between md:justify-around items-center">
-                    <div id="logo" class="basis-1/12">
+                    <div id="logo" class="basis-1/6 md:basis-1/12">
                         <Link :href="route('home')" class="text-3xl">Logo</Link>
                     </div>
                     <div id="search-bar" class="basis-4/12 hidden md:block">
@@ -15,7 +15,7 @@
                     <div class="justify-end hidden md:flex gap-3 flex-row basis-1/12">
                         <Button icon="pi pi-bell" text size="large"></Button>
                         <Link class="text-yellow-400 flex flex-row justify-center items-center gap-1 hover:opacity-70 transition" :href="route('home')">
-                            <OverlayBadge value="2">
+                            <OverlayBadge :value="$page.props.cartCount">
                                 <i class="pi pi-shopping-cart"></i>
                             </OverlayBadge>
                         </Link>
@@ -56,7 +56,14 @@
                             </template>
                         </Menu>
                     </div>
-                    <Button icon="pi pi-bell" class="md:!hidden" text size="large"></Button>
+                    <div class="flex flex-row md:hidden justify-center gap-3 items-center basis-2/6">
+                        <Button icon="pi pi-bell" class="md:!hidden" text size="large"></Button>
+                        <Link class="text-yellow-400 md:hidden flex flex-row justify-center items-center gap-1 hover:opacity-70 transition" :href="route('home')">
+                            <OverlayBadge :value="$page.props.cartCount">
+                                <i class="pi pi-shopping-cart"></i>
+                            </OverlayBadge>
+                        </Link>
+                    </div>
                 </div>
             </nav>
             <!-- <Navbar></Navbar> -->
@@ -71,7 +78,6 @@
 </template>
 
 <script>
-
 import InputText from "primevue/inputtext";
 import BottomBar from "../Components/BottomBar.vue";
 import Button from "primevue/button";

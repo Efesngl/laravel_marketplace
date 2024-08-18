@@ -127,13 +127,15 @@ class ProductController extends Controller
     public function show(string $id)
     {
         //
-
         $product = Product::with([
-            "chats.users",
+            "cart"=>function(Builder $builder){
+                $builder->where("user_id","=",auth()->user()->id);
+            },
             "user:id,name,email,phone_number",
             "specifications.specification:id,specification",
             "specifications.value:id,value",
             "images:product_id,image,id",
+
         ])->findOrFail($id);
         $product->favorites_count = null;
         if (!is_null(auth()->user())) {
