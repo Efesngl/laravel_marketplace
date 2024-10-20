@@ -23,4 +23,7 @@ class OrderProduct extends Model
     public function status():BelongsTo{
         return $this->belongsTo(OrderStatus::class);
     }
+    public function product():BelongsTo{
+        return $this->belongsTo(Product::class);
+    }
 }

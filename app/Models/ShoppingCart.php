@@ -12,8 +12,14 @@ class ShoppingCart extends Model
     protected $fillable=[
         "user_id",
         "product_id",
-        "quantity"
+        "quantity",
+        "selected"
     ];
+    protected function casts():array{
+        return [
+            "selected"=>"boolean"
+        ];
+    }
     public function user(){
         return $this->belongsTo(User::class);
     }

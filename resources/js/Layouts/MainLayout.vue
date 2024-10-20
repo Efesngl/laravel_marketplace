@@ -14,7 +14,7 @@
                     </div>
                     <div class="justify-end hidden md:flex gap-3 flex-row basis-1/12">
                         <Button icon="pi pi-bell" text size="large"></Button>
-                        <Link class="text-yellow-400 flex flex-row justify-center items-center gap-1 hover:opacity-70 transition" :href="route('home')">
+                        <Link class="text-yellow-400 flex flex-row justify-center items-center gap-1 hover:opacity-70 transition" :href="route('cart.index')">
                             <OverlayBadge :value="$page.props.cartCount">
                                 <i class="pi pi-shopping-cart"></i>
                             </OverlayBadge>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="flex flex-row md:hidden justify-center gap-3 items-center basis-2/6">
                         <Button icon="pi pi-bell" class="md:!hidden" text size="large"></Button>
-                        <Link class="text-yellow-400 md:hidden flex flex-row justify-center items-center gap-1 hover:opacity-70 transition" :href="route('home')">
+                        <Link class="text-yellow-400 md:hidden flex flex-row justify-center items-center gap-1 hover:opacity-70 transition" :href="route('cart.index')">
                             <OverlayBadge :value="$page.props.cartCount">
                                 <i class="pi pi-shopping-cart"></i>
                             </OverlayBadge>

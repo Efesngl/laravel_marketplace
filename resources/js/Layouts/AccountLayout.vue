@@ -14,8 +14,8 @@
                     </div>
                 </div>
             </nav>
-            <div class="h-auto box-border pt-14 w-svw bg-stone-200 dark:bg-zinc-900">
-                <slot></slot>
+            <div class="h-auto box-border pt-14 w-dvw bg-stone-200 dark:bg-zinc-900">
+                <slot name="content"></slot>
             </div>
         </div>
     </transition>

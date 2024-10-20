@@ -33,7 +33,7 @@ return new class extends Migration
             $table->decimal("total",14,2);
             $table->string("address")->nullable();
         });
-        Schema::create("order_product",function(Blueprint $table){
+        Schema::create("order_products",function(Blueprint $table){
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger("order_id");

@@ -1,14 +1,16 @@
 <template>
     <AccountLayout title="products" :backUrl="route('account.index')">
-        <div class="h-[calc(100svh-56px)] flex flex-col gap-4 p-2">
-            <h1 class="text-center text-3xl">Products</h1>
-            <div class="grid gap-1 grid-cols-2 p-3 md:grid-cols-5" v-if="products.length > 0">
-                <ProductCard :link="route('product.edit', { product: product.id })" v-for="product in products" :product="product"></ProductCard>
+        <template v-slot:content>
+            <div class="h-[calc(100svh-56px)] flex flex-col gap-4 p-2">
+                <h1 class="text-center text-3xl">Products</h1>
+                <div class="grid gap-1 grid-cols-2 p-3 md:grid-cols-5" v-if="products.length > 0">
+                    <ProductCard :link="route('product.edit', { product: product.id })" v-for="product in products" :product="product"></ProductCard>
+                </div>
+                <div v-else>
+                    <h5 class="text-3xl text-center">You dont have any products</h5>
+                </div>
             </div>
-            <div v-else>
-                <h5 class="text-3xl text-center">You dont have any products</h5>
-            </div>
-        </div>
+        </template>
     </AccountLayout>
 </template>
 <script>

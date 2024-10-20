@@ -27,6 +27,7 @@ class Product extends Model
         "quantity_per_user",
     ];
     protected $appends = ["formatted_price"];
+
     protected function banner(): Attribute
     {
         return Attribute::make(
@@ -70,5 +71,8 @@ class Product extends Model
     public function cart(): HasMany
     {
         return $this->hasMany(ShoppingCart::class);
+    }
+    public function orders():HasMany{
+        return $this->hasMany(OrderProduct::class);
     }
 }
